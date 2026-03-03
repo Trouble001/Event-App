@@ -65,6 +65,23 @@ class MeView(APIView):
             data=serializer.data,
             message="User fetched successfully"
         )
+    
+    def patch(self, request):
+        serializer = UserMeSerializer(
+            request.user,
+            data=request.data,
+            partial=True
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return success_response(message="User updated successfully")
+        
+
+        # Extract first error message as string
+        errors = serializer.errors
+        first_error = next(iter(errors.values()))[0]
+
+        return error_response(message=first_error)
 
 
 class LogoutView(APIView):

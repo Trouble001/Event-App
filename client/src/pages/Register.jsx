@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../features/auth/authSlice";
 import { useNavigate, Link } from "react-router-dom";
@@ -14,7 +14,7 @@ const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading } = useSelector((state) => state.auth);
+  const { user, loading } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
     full_name: "",
@@ -24,6 +24,13 @@ const Register = () => {
     password: "",
     confirm_password: "",
   });
+
+    // ✅ Redirect when user exists
+    useEffect(() => {
+      if (user) {
+        navigate("/profile");
+      }
+    }, [user, navigate]);
 
 
   const handleChange = (e) => {

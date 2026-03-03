@@ -84,6 +84,7 @@ class UserMeSerializer(serializers.ModelSerializer):
             "gender",
             "date_created",
         ]
+        read_only_fields = ["id", "email", "phone_number"]
 
 
 class ForgotPasswordSerializer(serializers.Serializer):

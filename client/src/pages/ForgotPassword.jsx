@@ -1,17 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { forgotPassword } from "../features/auth/authSlice";
 // import toast from "react-hot-toast";
 import AuthLayout from "../layouts/AuthLayout";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
 
 
 const ForgotPassword = () => {
   const dispatch = useDispatch();
-  const { loading } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const { user, loading } = useSelector((state) => state.auth);
 
   const [email, setEmail] = useState("");
+
+    // ✅ Redirect when user exists
+    useEffect(() => {
+      if (user) {
+        navigate("/profile");
+      }
+    }, [user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
