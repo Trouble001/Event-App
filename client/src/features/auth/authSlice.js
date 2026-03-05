@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginAPI, registerAPI, logoutAPI, meAPI, forgotPasswordAPI, resetPasswordAPI } from "./authAPI";
+import { loginAPI, registerAPI, logoutAPI, meAPI, forgotPasswordAPI, resetPasswordAPI, editProfileAPI } from "./authAPI";
 
 
 export const loginUser = createAsyncThunk(
@@ -55,6 +55,20 @@ export const fetchMe = createAsyncThunk(
     }
   }
 );
+
+export const editProfile = createAsyncThunk(
+  "auth/editProfile",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await editProfileAPI(data);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to update profile"
+      );
+    }
+  }
+)
 
 export const logoutUser = createAsyncThunk(
   "auth/logoutUser",
@@ -167,6 +181,22 @@ const authSlice = createSlice({
         state.loading = false;
         state.user = null;
         state.authChecked = true;
+      })
+
+      /* EDIT PROFILE */
+      .addCase(editProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.successMessage = null;
+      })
+      .addCase(editProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.successMessage = action.payload || "Profile updated successfully";
+      })
+      .addCase(editProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
 
       /* LOGOUT */

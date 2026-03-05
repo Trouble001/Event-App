@@ -12,6 +12,10 @@ const Profile = () => {
     navigate("/login");
   }
 
+  const handleEdit = () => {
+    navigate("/edit-profile");
+  }
+
   const handleLogout = async () => {
     await dispatch(logoutUser());
     navigate("/profile");
@@ -42,7 +46,10 @@ const Profile = () => {
               <h2 className="text-md text-gray-600">{user.email}</h2>
               <h2 className="text-md text-gray-600">{user.gender}</h2>
 
-              <button onClick={handleLogout} className="w-full shadow rounded-md text-base bg-rose-500 hover:bg-rose-600 text-rose-50 mt-4 px-2 py-2 flex items-center justify-center cursor-pointer">Logout</button>
+              <div className="w-full flex items-center justify-between">
+                <button onClick={handleEdit} className="w-full shadow rounded bg-cyan-500 hover:bg-cyan-600 text-rose-50 text-sm px-1 py-1 flex items-center justify-center cursor-pointer mr-4">Edit</button>
+                <button onClick={handleLogout} className="w-full shadow rounded bg-rose-500 hover:bg-rose-600 text-rose-50 text-sm px-1 py-1 flex items-center justify-center cursor-pointer">Logout</button>
+              </div>
             </div>
           </div>
         </div>
