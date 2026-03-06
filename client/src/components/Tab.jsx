@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { HomeIcon, UserIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
+import { HomeIcon, UserIcon, Cog6ToothIcon } from "@heroicons/react/24/solid";
 
 const Tab = () => {
   const tabs = [
@@ -20,7 +20,7 @@ const Tab = () => {
               to={tab.path}
               className={({ isActive }) =>
                 `flex flex-col items-center ${
-                  isActive ? "text-cyan-500" : "text-gray-400"
+                  isActive ? "text-cyan-500" : "text-gray-500"
                 }`
               }
             >
