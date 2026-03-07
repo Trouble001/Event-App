@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginAPI, registerAPI, logoutAPI, meAPI, forgotPasswordAPI, resetPasswordAPI, editProfileAPI } from "./authAPI";
+import { loginAPI, registerAPI, logoutAPI, meAPI, forgotPasswordAPI, resetPasswordAPI, editProfileAPI, fetchUsersAPI } from "./authAPI";
 
 
 export const loginUser = createAsyncThunk(
@@ -114,12 +114,27 @@ export const resetPassword = createAsyncThunk(
   }
 );
 
+export const fetchUsers = createAsyncThunk(
+  "auth/fetchUsers",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetchUsersAPI();
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to fetch users"
+      );
+    }
+  }
+);
+
 /* ================= SLICE ================= */
 
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: null,
+    users: [],
     loading: false,
     authChecked: false,
     error: null,
@@ -234,7 +249,23 @@ const authSlice = createSlice({
       .addCase(resetPassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+
+      /* FETCH USERS */
+      .addCase(fetchUsers.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.users = action.payload;
+        state.successMessage = action.payload || "Fetched Users";
+        
+      })
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        
+      })
   },
 });
 

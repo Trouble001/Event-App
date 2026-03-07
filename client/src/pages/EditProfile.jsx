@@ -34,6 +34,7 @@ const EditProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     await dispatch(editProfile(formData)).unwrap();
     navigate('/profile');
   };
@@ -62,7 +63,7 @@ const EditProfile = () => {
                 <option value="female">Female</option>
                 <option value="other">Other</option>
             </select>
-            <Button type="submit" disabled={loading}>
+            <Button type="submit" disabled={!formData.full_name || !formData.gender}>
                 {loading ? "Updating..." : "Update Profile"}
             </Button>
         </form>

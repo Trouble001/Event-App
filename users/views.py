@@ -2,10 +2,12 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import AccessToken
 from django.conf import settings
+from django.contrib.auth import get_user_model
 
-from .serializers import RegisterSerializer, LoginSerializer, UserMeSerializer, ForgotPasswordSerializer, ResetPasswordSerializer
+from .serializers import RegisterSerializer, LoginSerializer, UserMeSerializer, ForgotPasswordSerializer, ResetPasswordSerializer, AdminUserSerializer
 from common.responses import success_response, error_response
 
+User = get_user_model()
 
 class RegisterView(APIView):
     permission_classes = [AllowAny]
@@ -119,3 +121,67 @@ class ResetPasswordView(APIView):
         first_error = next(iter(errors.values()))[0]
 
         return error_response(message=first_error)
+    
+
+
+class AdminUsersView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        if not request.user.is_staff:
+            return error_response(message="Admin access required")
+
+        users = User.objects.all().order_by("-id")
+        serializer = AdminUserSerializer(users, many=True)
+
+        return success_response(
+            data=serializer.data,
+            message="Users fetched successfully"
+        )
+    
+    def patch(self, request, pk):
+
+        if not request.user.is_staff:
+            return error_response(message="Admin access required")
+
+        try:
+            user = User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            return error_response(message="User not found")
+
+        serializer = AdminUserSerializer(
+            user,
+            data=request.data,
+            partial=True
+        )
+
+        if serializer.is_valid():
+            serializer.save()
+            return success_response(
+                data=serializer.data,
+                message="User updated successfully"
+            )
+
+        errors = serializer.errors
+        first_error = next(iter(errors.values()))[0]
+
+        return error_response(message=first_error)
+
+
+    def delete(self, request, pk):
+
+        if not request.user.is_staff:
+            return error_response(message="Admin access required")
+
+        try:
+            user = User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            return error_response(message="User not found")
+
+        if user == request.user:
+            return error_response(message="You cannot delete yourself")
+
+        user.delete()
+
+        return success_response(message="User deleted successfully")

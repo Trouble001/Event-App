@@ -37,17 +37,22 @@ const Profile = () => {
 
   return (
     <AppLayout>
-      <div className="w-full flex flex-col items-center justify-start">
-        <div className="w-full flex items-center flex-row">
-          <div className="w-20 h-20 rounded-full bg-gray-400 mr-2"></div>
-          <div>
-            <h2 className="text-xl font-medium text-gray-800">{user.full_name}</h2>
-            <p className="text-md text-gray-600">{user.email}</p>
+      <div className="w-full flex items-center justify-center">
+        <div className="w-11/12 mx-auto">
+          
+          <div className="w-full flex items-center justify-start">
+            <div className="w-20 h-20 md:w-30 md:h-30 rounded-full bg-gray-400 mr-4"></div>
+            <div className="w-6/12">
+              <h2 className="text-xl md:text-3xl font-medium text-gray-900">{user.full_name}</h2>
+              <p className="text-sm md:text-md text-gray-400">{user.email}</p>
+              <div className="w-full flex flex-row items-center justify-center mt-4">
+                <button onClick={handleEdit} className="w-full rounded-full bg-gray-600 hover:bg-gray-500 text-gray-50 ms:text-sm text-xs md:py-2 py-1 px-4 flex flex-row items-center justify-center cursor-pointer mr-4">Edit Profile</button>
+                <button onClick={handleLogout} className="w-full rounded-full bg-rose-500 hover:bg-rose-600 text-rose-50 ms:text-sm text-xs md:py-2 py-1 px-4 flex flex-row items-center justify-center cursor-pointer">Logout</button>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="w-full flex flex-row items-center justify-start mt-4">
-          <button onClick={handleEdit} className="rounded-xl bg-gray-600 hover:bg-gray-500 text-gray-50 text-sm px-3 py-1.5 flex items-center justify-center cursor-pointer mr-4">Edit Profile</button>
-          <button onClick={handleLogout} className="rounded-xl bg-rose-500 hover:bg-rose-600 text-rose-50 text-sm px-3 py-1.5 flex items-center justify-center cursor-pointer">Logout</button>
+
+
         </div>
       </div>
     </AppLayout>
@@ -55,14 +60,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-
-
-        // <div>
-          
-        //   <h2 className="text-md text-gray-600">{user.phone_number}</h2>
-        //   <h2 className="text-md text-gray-600">{user.email}</h2>
-        //   <h2 className="text-md text-gray-600">{user.gender}</h2>
-
-        //   
-        // </div>
