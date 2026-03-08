@@ -8,6 +8,7 @@ from django.utils.encoding import force_bytes
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
+
 class RegisterSerializer(serializers.ModelSerializer):
     phone_number = PhoneNumberField()
     confirm_password = serializers.CharField(write_only=True)
@@ -31,7 +32,8 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Invalid phone number")
 
         if User.objects.filter(phone_number=value).exclude(pk=self.instance.pk if self.instance else None).exists():
-            raise serializers.ValidationError("Phone number already registered")
+            raise serializers.ValidationError(
+                "Phone number already registered")
 
         return value
 
@@ -71,7 +73,7 @@ class LoginSerializer(serializers.Serializer):
 
         attrs["user"] = user
         return attrs
-    
+
 
 class UserMeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -82,6 +84,9 @@ class UserMeSerializer(serializers.ModelSerializer):
             "email",
             "full_name",
             "gender",
+            "is_active",
+            "is_staff",
+            "is_superuser",
             "date_created",
         ]
         read_only_fields = ["id", "email", "phone_number"]
@@ -108,11 +113,11 @@ class ForgotPasswordSerializer(serializers.Serializer):
         to_email = [user.email]
 
         html_content = render_to_string(
-        "emails/reset_password.html",
-        {
-            "user": user,
-            "reset_link": reset_link,
-        },
+            "emails/reset_password.html",
+            {
+                "user": user,
+                "reset_link": reset_link,
+            },
         )
 
         email = EmailMultiAlternatives(subject, "", from_email, to_email)

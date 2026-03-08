@@ -15,6 +15,7 @@ import ToastListener from "./components/ToastListener";
 import Tab from "./components/Tab";
 import Loader from "./layouts/Loader";
 import EditProfile from "./pages/EditProfile";
+import Dasboard from "./pages/Dasboard";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ function App() {
         <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
+        <Route path="/dashboard" element={<Dasboard />} />
       </Routes>
       <Tab />
     </BrowserRouter>

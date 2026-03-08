@@ -42,9 +42,9 @@ const Login = () => {
 
   return (
     <AuthLayout>
-      <div className="w-11/12 sm:w-10/12 md:w-9/12 lg:w-8/12 xl:w-6/12 2xl:w-5/12 shadow-md rounded-md bg-gray-50 py-8 flex items-center justify-center flex-col">
+      <div className="w-full md:w-10/12 lg:w-5/12 rounded-md bg-gray-50 py-8 flex items-center justify-center flex-col outline outline-gray-200">
       <h2 className="text-2xl mb-4">Login</h2>
-      <form onSubmit={handleSubmit} className="w-full px-8">
+      <form onSubmit={handleSubmit} className="w-full px-4 md:px-8 lg:px-8">
         <Input
           type="text"
           name="phone_number"
@@ -77,11 +77,11 @@ const Login = () => {
           >{loading ? "Logging in..." : "Login"}</Button>
       </form>
 
-      <div className="w-full px-8 text-gray-700 flex items-center justify-between">
+      <div className="w-full text-gray-600 text-base lg:text-md flex flex-col items-center justify-center">
+        <p className="mb-2"><Link className="text-cyan-600" to="/forgot-password">Forgot Password</Link></p>
         <p>
-        Don't have an account? <Link to="/register">Register</Link>
+        Don't have an account? <Link className="text-cyan-600" to="/register">Register</Link>
         </p>
-        <p><Link to="/forgot-password">Forgot Password</Link></p>
       </div>
     </div>
     </AuthLayout>

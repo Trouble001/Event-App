@@ -20,7 +20,3 @@ export const forgotPasswordAPI = (data) =>
 
 export const resetPasswordAPI = (data) =>
   axiosInstance.post("/auth/reset-password/", data);
-
-export const fetchUsersAPI = () => {
-  axiosInstance.get("/auth/users/");
-}

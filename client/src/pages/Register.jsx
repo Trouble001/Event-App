@@ -83,16 +83,15 @@ const Register = () => {
 
   return (
     <AuthLayout>
-      <div className="w-11/12 sm:w-10/12 md:w-9/12 lg:w-8/12 xl:w-6/12 2xl:w-5/12 shadow-md rounded-md bg-gray-50 py-8 flex items-center justify-center flex-col">
+      <div className="w-full md:w-10/12 lg:w-5/12 rounded-md bg-gray-50 py-8 flex items-center justify-center flex-col outline outline-gray-200">
       <h2 className="text-2xl mb-4">Register</h2>
-      <form onSubmit={handleSubmit} className="w-full px-8">
+      <form onSubmit={handleSubmit} className="w-full px-4 md:px-8 lg:px-8">
         <Input
           type="text"
           name="full_name"
           placeholder="Full Name"
           value={formData.full_name}
           onChange={handleChange}
-          required
         />
 
         <Input
@@ -118,11 +117,13 @@ const Register = () => {
           value={formData.gender}
           onChange={handleChange}
           required
-          className='w-full outline text-base outline-gray-200 rounded-md bg-gray-50 mb-4 px-2 py-2 flex items-center justify-center'
+          className='w-full outline text-base text-gray-800 outline-gray-200 rounded-md bg-gray-50 mb-4 px-4 py-3 flex items-center'
         >
           <option value="">Select Gender</option>
           <option value="male">Male</option>
           <option value="female">Female</option>
+          <option value="female">Other</option>
+
         </select>
 
         <Input
@@ -156,9 +157,10 @@ const Register = () => {
         </Button>
       </form>
 
-      <p className="text-gray-700">
-        Already have an account? <Link to="/login">Login</Link>
-      </p>
+      <div className="w-full text-gray-600 text-base lg:text-md flex items-center justify-center">
+        <p className="mr-1">Already have an account?</p>
+        <Link className="text-cyan-600" to="/login">Login</Link>
+      </div>
     </div>
     </AuthLayout>
   );

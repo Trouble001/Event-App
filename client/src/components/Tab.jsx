@@ -1,9 +1,10 @@
 import { NavLink } from "react-router-dom";
-import { HomeIcon, UserIcon, Cog6ToothIcon } from "@heroicons/react/24/solid";
+import { HomeIcon, UserIcon, Cog6ToothIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
 
 const Tab = () => {
   const tabs = [
     { name: "Home", path: "/", icon: HomeIcon },
+    { name: "Dashboard", path: "/dashboard", icon: Squares2X2Icon},
     { name: "Profile", path: "/profile", icon: UserIcon },
     { name: "Settings", path: "/login", icon: Cog6ToothIcon },
   ];
