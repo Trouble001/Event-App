@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { fetchUsers } from '../features/admin/adminSlice';
 import AppLayout from '../layouts/AppLayout';
 import AccessDenied from '../components/AccessDenied';
 
 const Dasboard = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const { users, loading } = useSelector((state) => state.admin);
 
@@ -52,7 +54,7 @@ if (!user?.is_staff && !user?.is_superuser) return <AccessDenied />;
               <td className='pl-2 py-2 border-r border-gray-200'>{user.is_staff ? "Yes" : "No"}</td>
               <td className='pl-2 py-2 border-r border-gray-200'>{user.is_superuser ? "Yes" : "No"}</td>
               <td className='pl-2 py-2'>
-                <button>Edit</button>
+                <button className='cursor-pointer' onClick={() => navigate(`/users/${user.id}`)}>Edit</button>
               </td>
             </tr>
           ))}

@@ -127,10 +127,23 @@ class ResetPasswordView(APIView):
 class AdminUsersView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request, pk=None):
 
         if not request.user.is_staff:
             return error_response(message="Admin access required")
+        
+        if pk:
+            try:
+                user = User.objects.get(pk=pk)
+            except User.DoesNotExist:
+                return error_response(message="User not found")
+
+            serializer = AdminUserSerializer(user)
+
+            return success_response(
+                data=serializer.data,
+                message="User fetched successfully"
+            )
 
         users = User.objects.all().order_by("-id")
         serializer = AdminUserSerializer(users, many=True)

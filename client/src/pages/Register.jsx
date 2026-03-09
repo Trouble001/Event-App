@@ -83,7 +83,7 @@ const Register = () => {
 
   return (
     <AuthLayout>
-      <div className="w-full md:w-10/12 lg:w-5/12 rounded-md bg-gray-50 py-8 flex items-center justify-center flex-col outline outline-gray-200">
+      <div className="w-full md:w-10/12 lg:w-6/12 xl:w-5/12 rounded-md bg-gray-50 py-8 flex items-center justify-center flex-col outline outline-gray-200">
       <h2 className="text-2xl mb-4">Register</h2>
       <form onSubmit={handleSubmit} className="w-full px-4 md:px-8 lg:px-8">
         <Input
@@ -117,7 +117,7 @@ const Register = () => {
           value={formData.gender}
           onChange={handleChange}
           required
-          className='w-full outline text-base text-gray-800 outline-gray-200 rounded-md bg-gray-50 mb-4 px-4 py-3 flex items-center'
+          className='w-full outline text-base text-gray-800 outline-gray-200 rounded-md bg-gray-50 mb-4 px-4 py-2 flex items-center'
         >
           <option value="">Select Gender</option>
           <option value="male">Male</option>

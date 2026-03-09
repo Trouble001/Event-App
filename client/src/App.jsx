@@ -16,6 +16,7 @@ import Tab from "./components/Tab";
 import Loader from "./layouts/Loader";
 import EditProfile from "./pages/EditProfile";
 import Dasboard from "./pages/Dasboard";
+import UserDetail from "./pages/UserDetail";
 
 function App() {
   const dispatch = useDispatch();
@@ -41,6 +42,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/dashboard" element={<Dasboard />} />
+        <Route path="/users/:id" element={<UserDetail />} />
       </Routes>
       <Tab />
     </BrowserRouter>

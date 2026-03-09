@@ -19,7 +19,8 @@ const Input = ({
         onChange={onChange}
         placeholder={placeholder}
         {...rest}
-        className='w-full outline text-base text-gray-800 outline-gray-200 rounded-md bg-gray-50 mb-4 px-4 py-3 flex items-center'
+        className='w-full outline text-base text-gray-800 outline-gray-200 rounded-md bg-gray-50 mb-4 px-4 py-2
+         flex items-center'
     />
       {rightIcon && (
           <button
