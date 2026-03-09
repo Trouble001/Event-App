@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUser, updateUser } from "../features/admin/adminSlice";
 import AppLayout from "../layouts/AppLayout";
@@ -8,6 +8,7 @@ const UserDetail = () => {
 
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { selectedUser } = useSelector((state) => state.admin);
 
@@ -41,9 +42,14 @@ const UserDetail = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(updateUser({id, data: formData}));
+    try {
+      await dispatch(updateUser({id: selectedUser.id, data: formData})).unwrap();
+      navigate("/dashboard");
+    } catch (error) {
+      console.log("Error:", error);
+    }
   };
 
   return (

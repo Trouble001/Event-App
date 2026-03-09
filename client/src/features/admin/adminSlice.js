@@ -70,65 +70,73 @@ const adminSlice = createSlice({
   initialState: {
     users: [],
     selectedUser: null,
-    loading: false,
-    error: null,
-    successMessage: null,
+    adminLoading: false,
+    adminError: null,
+    adminSuccess: null,
   },
   reducers: {
-    clearError: (state) => {
-      state.error = null;
+    clearAdminError: (state) => {
+      state.adminError = null;
     },
-    clearSuccess: (state) => {
-      state.successMessage = null;
+    clearAdminSuccess: (state) => {
+      state.adminSuccess = null;
     }
   },
   extraReducers: (builder) => {
     builder
       /* FETCH USERS */
       .addCase(fetchUsers.pending, (state) => {
-        state.loading = true;
+        state.adminLoading = true;
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
-        state.loading = false;
+        state.adminLoading = false;
         state.users = action.payload.data;
-        state.successMessage = action.payload.message;
+        state.adminSuccess = action.payload.message;
         
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         console.log("Payload:", action.payload);
         console.log("Error:", action.error);
-        state.loading = false;
-        state.error = action.payload; 
+        state.adminLoading = false;
+        state.adminError = action.payload; 
       })
 
       /* FETCH SINGLE USER */
       .addCase(fetchUser.pending, (state) => {
-        state.loading = true;
+        state.adminLoading = true;
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
-        state.loading = false;
+        state.adminLoading = false;
         state.selectedUser = action.payload.data;
-        state.successMessage = action.payload.message; 
+        state.adminSuccess = action.payload.message; 
       })
       .addCase(fetchUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload; 
+        state.adminLoading = false;
+        state.adminError = action.payload; 
       })
 
       /* UPDATE USER */
       .addCase(updateUser.pending, (state) => {
-        state.loading = true;
+        state.adminLoading = true;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.successMessage = action.payload.message;
+        state.selectedUser = action.payload.data;
+        // const index = state.users.findIndex(
+        //   (u) => u.id === action.payload.id
+        // );
+        // if (index !== -1) {
+        //   state.users[index] = action.payload;
+        // }
+        state.adminLoading = false;
+        state.adminSuccess = action.payload.message;
+        console.log("Success:", action.payload.message);
       })
       .addCase(updateUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload; 
+        state.adminLoading = false;
+        state.adminError = action.payload; 
       });
   },
 });
 
-export const { clearError, clearSuccess } = adminSlice.actions;
+export const { clearAdminError, clearAdminSuccess } = adminSlice.actions;
 export default adminSlice.reducer;

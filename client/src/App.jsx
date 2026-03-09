@@ -21,17 +21,20 @@ import UserDetail from "./pages/UserDetail";
 function App() {
   const dispatch = useDispatch();
   const { loading, authChecked } = useSelector((state) => state.auth);
+  const { adminLoading } = useSelector((state) => state.admin);
 
   useEffect(() => {
     dispatch(fetchMe());
   }, [dispatch]);
+
 
   return (
     <BrowserRouter>
       <Toaster position="top-right" reverseOrder={false} />
       <ToastListener />
       {loading && <Loader />}
-      {!authChecked && <Loader />}
+      {adminLoading && <Loader />}
+      {/* {!authChecked && <Loader />} */}
 
       <Routes>
         <Route path="/" element={<Home />} />
