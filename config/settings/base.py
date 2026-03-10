@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # Local Apps
     "users",
     "common",
+    "slides",
 ]
 
 # --------------------------------------------------
@@ -164,6 +165,9 @@ CORS_ALLOWED_ORIGINS = [
 # --------------------------------------------------
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # --------------------------------------------------
 # Default Primary Key Field
