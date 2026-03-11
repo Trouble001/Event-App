@@ -17,6 +17,7 @@ import Loader from "./layouts/Loader";
 import EditProfile from "./pages/EditProfile";
 import Dasboard from "./pages/Dasboard";
 import UserDetail from "./pages/UserDetail";
+import Vastu from "./pages/Vastu";
 
 function App() {
   const dispatch = useDispatch();
@@ -46,6 +47,8 @@ function App() {
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/dashboard" element={<Dasboard />} />
         <Route path="/users/:id" element={<UserDetail />} />
+        <Route path="/vastu" element={<Vastu />} />
+
       </Routes>
       <Tab />
     </BrowserRouter>

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchUsersAPI, fetchUserAPI, updateUserAPI } from "./adminAPI";
+import { fetchUsersAPI, fetchUserAPI, updateUserAPI, fetchSlidesAPI} from "./adminAPI";
 
 
 // Fetch All Users
@@ -63,12 +63,31 @@ export const updateUser = createAsyncThunk(
   }
 );
 
+// Fetch Slides
+export const fetchSlides = createAsyncThunk(
+  "admin/fetchSlides",
+  async (slug, { rejectWithValue }) => {
+    try {
+      const response = await fetchSlidesAPI(slug);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message ||
+        error.response?.data?.errors?.detail ||
+        error.response?.data?.detail ||
+        "Something went wrong!"
+      );
+    }
+  }
+);
+
 /* ================= SLICE ================= */
 
 const adminSlice = createSlice({
   name: "admin",
   initialState: {
     users: [],
+    slides: [],
     selectedUser: null,
     adminLoading: false,
     adminError: null,
@@ -134,7 +153,24 @@ const adminSlice = createSlice({
       .addCase(updateUser.rejected, (state, action) => {
         state.adminLoading = false;
         state.adminError = action.payload; 
-      });
+      })
+
+      /* FETCH Slides */
+      .addCase(fetchSlides.pending, (state) => {
+        state.adminLoading = true;
+      })
+      .addCase(fetchSlides.fulfilled, (state, action) => {
+        state.adminLoading = false;
+        state.slides = action.payload.data;
+        state.adminSuccess = action.payload.message;
+        
+      })
+      .addCase(fetchSlides.rejected, (state, action) => {
+        console.log("Payload:", action.payload);
+        console.log("Error:", action.error);
+        state.adminLoading = false;
+        state.adminError = action.payload; 
+      })
   },
 });
 

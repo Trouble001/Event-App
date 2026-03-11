@@ -18,7 +18,8 @@ class SlideByGroupView(APIView):
                     status_code=404
                 )
 
-            serializer = SlideSerializer(slides, many=True)
+            serializer = SlideSerializer(
+                slides, many=True, context={"request": request})
             return success_response(
                 data=serializer.data,
                 message="Slides fetched successfully"

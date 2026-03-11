@@ -2,12 +2,11 @@ from django.db import models
 
 
 class SlideGroup(models.Model):
-
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
     class Meta:
         ordering = ["name"]
 
@@ -16,7 +15,6 @@ class SlideGroup(models.Model):
 
 
 class Slide(models.Model):
-
     group = models.ForeignKey(
         SlideGroup,
         on_delete=models.CASCADE,
