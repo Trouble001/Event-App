@@ -3,7 +3,7 @@ const Button = ({type, disabled, children}) => {
         <button
             type={type}
             disabled={disabled}
-            className="w-full shadow rounded-md text-base bg-cyan-500 hover:bg-cyan-600 text-cyan-50 mb-4 px-2 py-2 flex items-center justify-center cursor-pointer"
+            className="w-full shadow bg-cyan-500 hover:bg-white/40 rounded-lg text-white mb-4 px-2 py-2 flex items-center justify-center cursor-pointer font-semibold transition"
         >{children}</button>
     );
 }

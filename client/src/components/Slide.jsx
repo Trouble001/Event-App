@@ -11,7 +11,7 @@ const Slide = ({ slide, active }) => {
         className="absolute w-full h-full object-cover brightness-[0.35]"
       />
 
-      <div className="bg-black/30 backdrop-blur-lg shadow-lg border-2 border-cyan-500 rounded-2xl p-10 text-white max-w-10/12">
+      <div className="backdrop-blur-md bg-white/20 border border-white/30 shadow-xl rounded-2xl p-10 text-white max-w-10/12">
 
         <h2 className="text-4xl font-bold text-cyan-500 mb-4">
           {slide.title}

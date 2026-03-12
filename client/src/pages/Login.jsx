@@ -6,6 +6,7 @@ import AuthLayout from "../layouts/AuthLayout";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import AuthContainer from "../components/AuthContainer";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -42,8 +43,8 @@ const Login = () => {
 
   return (
     <AuthLayout>
-      <div className="w-full md:w-10/12 lg:w-6/12 xl:w-5/12 rounded-md bg-gray-50 py-8 flex items-center justify-center flex-col outline outline-gray-200">
-      <h2 className="text-2xl mb-4">Login</h2>
+      <AuthContainer>
+      <h2 className="text-white text-2xl font-bold mb-4">Login</h2>
       <form onSubmit={handleSubmit} className="w-full px-4 md:px-8 lg:px-8">
         <Input
           type="text"
@@ -77,13 +78,13 @@ const Login = () => {
           >{loading ? "Logging in..." : "Login"}</Button>
       </form>
 
-      <div className="w-full text-gray-600 text-base lg:text-md flex flex-col items-center justify-center">
-        <p className="mb-2"><Link className="text-cyan-600" to="/forgot-password">Forgot Password</Link></p>
-        <p>
-        Don't have an account? <Link className="text-cyan-600" to="/register">Register</Link>
+      <div className="w-full text-base lg:text-md flex flex-col items-center justify-center">
+        <p className="mb-2"><Link className="text-white/80 hover:text-white" to="/forgot-password">Forgot Password</Link></p>
+        <p className="text-white/80">
+        Don't have an account? <Link className="text-white font-semibold cursor-pointer hover:underline" to="/register">Register</Link>
         </p>
       </div>
-    </div>
+    </AuthContainer>
     </AuthLayout>
   );
 };

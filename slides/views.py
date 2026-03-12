@@ -15,7 +15,6 @@ class SlideByGroupView(APIView):
             if not slides.exists():
                 return error_response(
                     message="No slides found",
-                    status_code=404
                 )
 
             serializer = SlideSerializer(
@@ -29,5 +28,4 @@ class SlideByGroupView(APIView):
             return error_response(
                 message="Something went wrong",
                 errors=str(e),
-                status_code=500
             )

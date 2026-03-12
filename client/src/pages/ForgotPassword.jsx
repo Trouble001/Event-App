@@ -6,6 +6,7 @@ import AuthLayout from "../layouts/AuthLayout";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
+import AuthContainer from "../components/AuthContainer";
 
 
 const ForgotPassword = () => {
@@ -33,8 +34,8 @@ const ForgotPassword = () => {
 
   return (
     <AuthLayout>
-      <div className="w-full md:w-10/12 lg:w-6/12 xl:w-5/12 rounded-md bg-gray-50 py-8 flex items-center justify-center flex-col outline outline-gray-200">
-      <h2 className="text-2xl mb-4">Forgot Password</h2>
+      <AuthContainer>
+      <h2 className="text-white text-2xl font-bold mb-4">Forgot Password</h2>
       <form onSubmit={handleSubmit} className="w-full px-4 md:px-8 lg:px-8">
         <Input
           type="email"
@@ -49,7 +50,7 @@ const ForgotPassword = () => {
           disabled={loading}
         >{loading ? "Sending..." : "Send Reset Link"}</Button>
       </form>
-    </div>
+    </AuthContainer>
     </AuthLayout>
   );
 };

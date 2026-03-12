@@ -6,6 +6,7 @@ import AuthLayout from "../layouts/AuthLayout";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import AuthContainer from "../components/AuthContainer";
 // import toast from "react-hot-toast";
 
 const ResetPassword = () => {
@@ -41,8 +42,8 @@ const ResetPassword = () => {
 
   return (
     <AuthLayout>
-      <div className="w-full md:w-10/12 lg:w-6/12 xl:w-5/12 rounded-md bg-gray-50 py-8 flex items-center justify-center flex-col outline outline-gray-200">
-      <h2 className="text-2xl mb-4">Reset Password</h2>
+      <AuthContainer>
+      <h2 className="text-white text-2xl font-bold mb-4">Reset Password</h2>
       <form onSubmit={handleSubmit} className="w-full px-4 md:px-8 lg:px-8">
         <Input
           type={showPassword ? "text" : "password"}
@@ -63,7 +64,7 @@ const ResetPassword = () => {
           {loading ? "Resetting..." : "Reset Password"}
         </Button>
       </form>
-    </div>
+    </AuthContainer>
     </AuthLayout>
   );
 };
