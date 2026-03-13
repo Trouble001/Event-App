@@ -1,12 +1,9 @@
-from django.urls import path
-from .views import SlideByGroupView
+from rest_framework.routers import DefaultRouter
+from .views import SlideViewSet, SlideGroupViewSet
 
+router = DefaultRouter()
 
-urlpatterns = [
-    path(
-        "slides/<slug:slug>/",
-        SlideByGroupView.as_view(),
-        name="slides-by-group"
-    ),
+router.register("slides", SlideViewSet, basename="slides")
+router.register("slide-groups", SlideGroupViewSet, basename="slide-groups")
 
-]
+urlpatterns = router.urls

@@ -11,6 +11,3 @@ export const updateUserAPI = (id, data) =>
 
 export const deleteUserAPI = (id) =>
   axiosInstance.delete(`/auth/users/${id}/`);
-
-export const fetchSlidesAPI = (slug) =>
-  axiosInstance.get(`/slides/${slug}/`);
