@@ -7,15 +7,15 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import AuthContainer from "../components/AuthContainer";
+import LoadingButton from "../components/LoadingButton";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, user } = useSelector(
-    (state) => state.auth
-  );
+  const { user } = useSelector((state) => state.auth);
+  const loginStatus = useSelector((state) => state.auth.status.login);
 
   const [formData, setFormData] = useState({
     phone_number: "",
@@ -45,7 +45,7 @@ const Login = () => {
     <AuthLayout>
       <AuthContainer>
       <h2 className="text-white text-2xl font-bold mb-4">Login</h2>
-      <form onSubmit={handleSubmit} className="w-full px-4 md:px-8 lg:px-8">
+      <form onSubmit={handleSubmit} className="w-full px-5 md:px-8 lg:px-8">
         <Input
           type="text"
           name="phone_number"
@@ -74,8 +74,8 @@ const Login = () => {
 
         <Button
           type="submit"
-          disabled={loading}
-          >{loading ? "Logging in..." : "Login"}</Button>
+          disabled={loginStatus === "loading"}
+          >{loginStatus === "loading" ? (<LoadingButton />) : "Login"}</Button>
       </form>
 
       <div className="w-full text-base lg:text-md flex flex-col items-center justify-center">

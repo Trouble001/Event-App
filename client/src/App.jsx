@@ -33,9 +33,9 @@ function App() {
     <BrowserRouter>
       <Toaster position="top-right" reverseOrder={false} />
       <ToastListener />
-      {loading && <Loader />}
-      {adminLoading && <Loader />}
-      {/* {!authChecked && <Loader />} */}
+      {/* {loading && <Loader />}
+      {adminLoading && <Loader />} */}
+      {!authChecked && <Loader />}
 
       <Routes>
         <Route path="/" element={<Home />} />

@@ -122,6 +122,12 @@ const authSlice = createSlice({
   initialState: {
     user: null,
     loading: false,
+    status: {
+      login: "idle",
+      register: "idle",
+      forgot: "idle",
+      reset: "idle",
+    },
     authChecked: false,
     error: null,
     successMessage: null,
@@ -139,33 +145,33 @@ const authSlice = createSlice({
 
       /* LOGIN */
       .addCase(loginUser.pending, (state) => {
-        state.loading = true;
+        state.status.login = "loading";
         state.error = null;
         state.successMessage = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.loading = false;
+        state.status.login = "Succeeded";
         state.user = action.payload.user;
         state.successMessage = action.payload.message;
         state.authChecked = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false;
+        state.status.login = "failed";
         state.error = action.payload;
       })
 
       /* REGISTER */
       .addCase(registerUser.pending, (state) => {
-        state.loading = true;
+        state.status.register = "loading";
         state.error = null;
         state.successMessage = null;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        state.loading = false;
+        state.status.register = "succeeded";
         state.successMessage = action.payload;
       })
       .addCase(registerUser.rejected, (state, action) => {
-        state.loading = false;
+        state.status.register = "failed";
         state.error = action.payload;
       })
 
@@ -208,32 +214,32 @@ const authSlice = createSlice({
 
       /* FORGOT PASSWORD */
       .addCase(forgotPassword.pending, (state) => {
-        state.loading = true;
+        state.status.forgot = "loading";
         state.error = null;
         state.successMessage = null;
       })
       .addCase(forgotPassword.fulfilled, (state, action) => {
-        state.loading = false;
+        state.status.forgot = "succeeded";
         state.successMessage = action.payload;
       })
       .addCase(forgotPassword.rejected, (state, action) => {
-        state.loading = false;
+        state.status.forgot = "failed";
         state.error = action.payload;
       })
 
 
       /* RESET PASSWORD */
       .addCase(resetPassword.pending, (state) => {
-        state.loading = true;
+        state.status.reset = "loading";
         state.error = null;
         state.successMessage = null;
       })
       .addCase(resetPassword.fulfilled, (state, action) => {
-        state.loading = false;
+        state.status.reset = "succeeded";
         state.successMessage = action.payload;
       })
       .addCase(resetPassword.rejected, (state, action) => {
-        state.loading = false;
+        state.status.reset = "failed";
         state.error = action.payload;
       });
   },

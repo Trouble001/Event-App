@@ -8,6 +8,7 @@ import Button from "../components/Button";
 import toast from "react-hot-toast";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import AuthContainer from "../components/AuthContainer";
+import LoadingButton from "../components/LoadingButton";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,7 +16,8 @@ const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { user, loading } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
+    const registerStatus = useSelector((state) => state.auth.status.register);
 
   const [formData, setFormData] = useState({
     full_name: "",
@@ -86,7 +88,7 @@ const Register = () => {
     <AuthLayout>
       <AuthContainer>
       <h2 className="text-white text-2xl font-bold mb-4">Register</h2>
-      <form onSubmit={handleSubmit} className="w-full px-4 md:px-8 lg:px-8">
+      <form onSubmit={handleSubmit} className="w-full px-5 md:px-8 lg:px-8">
         <Input
           type="text"
           name="full_name"
@@ -154,8 +156,10 @@ const Register = () => {
           onRightIconClick={() => setShowPassword(!showPassword)}
         />
 
-        <Button type="submit" disabled={loading}>
-          {loading ? "Registering..." : "Register"}
+        <Button
+          type="submit"
+          disabled={registerStatus === "loading"}>
+          {registerStatus === "loading" ? (<LoadingButton />) : "Register"}
         </Button>
       </form>
 

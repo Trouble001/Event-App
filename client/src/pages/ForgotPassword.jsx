@@ -5,14 +5,17 @@ import { forgotPassword } from "../features/auth/authSlice";
 import AuthLayout from "../layouts/AuthLayout";
 import Input from "../components/Input";
 import Button from "../components/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import AuthContainer from "../components/AuthContainer";
+import LoadingButton from "../components/LoadingButton";
 
 
 const ForgotPassword = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, loading } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
+  const forgotStatus = useSelector((state) => state.auth.status.forgot);
+
 
   const [email, setEmail] = useState("");
 
@@ -36,7 +39,7 @@ const ForgotPassword = () => {
     <AuthLayout>
       <AuthContainer>
       <h2 className="text-white text-2xl font-bold mb-4">Forgot Password</h2>
-      <form onSubmit={handleSubmit} className="w-full px-4 md:px-8 lg:px-8">
+      <form onSubmit={handleSubmit} className="w-full px-5 md:px-8 lg:px-8">
         <Input
           type="email"
           name="email"
@@ -47,8 +50,9 @@ const ForgotPassword = () => {
 
         <Button
           type="submit"
-          disabled={loading}
-        >{loading ? "Sending..." : "Send Reset Link"}</Button>
+          disabled={forgotStatus === "loading"}
+        >{forgotStatus === "loading" ? (<LoadingButton />) : "Send Reset Link"}</Button>
+        <div className="w-full flex items-center justify-center text-white/80 hover:text-white text-md"><Link to="/login">Cancel</Link></div>
       </form>
     </AuthContainer>
     </AuthLayout>

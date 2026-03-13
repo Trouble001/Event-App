@@ -7,13 +7,16 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import AuthContainer from "../components/AuthContainer";
+import LoadingButton from "../components/LoadingButton";
 // import toast from "react-hot-toast";
 
 const ResetPassword = () => {
   const { uid, token } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, loading } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
+  const resetStatus = useSelector((state) => state.auth.status.reset);
+
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
 
@@ -44,7 +47,7 @@ const ResetPassword = () => {
     <AuthLayout>
       <AuthContainer>
       <h2 className="text-white text-2xl font-bold mb-4">Reset Password</h2>
-      <form onSubmit={handleSubmit} className="w-full px-4 md:px-8 lg:px-8">
+      <form onSubmit={handleSubmit} className="w-full px-5 md:px-8 lg:px-8">
         <Input
           type={showPassword ? "text" : "password"}
           name="password"
@@ -60,8 +63,8 @@ const ResetPassword = () => {
           }
           onRightIconClick={() => setShowPassword(!showPassword)}
         />
-        <Button type="submit" disabled={loading}>
-          {loading ? "Resetting..." : "Reset Password"}
+        <Button type="submit" disabled={resetStatus === "loading"}>
+          {resetStatus === "loading" ? (<LoadingButton />) : "Reset Password"}
         </Button>
       </form>
     </AuthContainer>
