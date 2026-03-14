@@ -17,23 +17,17 @@ import Loader from "./layouts/Loader";
 import EditProfile from "./pages/EditProfile";
 import Dasboard from "./pages/Dasboard";
 import UserDetail from "./pages/UserDetail";
-import { fetchSlideGroups } from "./features/slide/slideSlice";
+import SlideGroups from "./pages/SlideGroups";
+import Slides from "./pages/Slides";
 
 function App() {
   const dispatch = useDispatch();
   const { authChecked } = useSelector((state) => state.auth);
-  const { groups } = useSelector((state) => state.slide)
   // const { adminLoading } = useSelector((state) => state.admin);
 
   useEffect(() => {
     dispatch(fetchMe());
-    dispatch(fetchSlideGroups())
   }, [dispatch]);
-
-  useEffect(() => {
-    console.log("Groups:", groups);
-  }, [groups]);
-
 
   return (
     <BrowserRouter>
@@ -53,7 +47,8 @@ function App() {
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/dashboard" element={<Dasboard />} />
         <Route path="/users/:id" element={<UserDetail />} />
-
+        <Route path="/slide-groups" element={<SlideGroups />} />
+        <Route path="/slides/:slug" element={<Slides />} />
       </Routes>
       <Tab />
     </BrowserRouter>
