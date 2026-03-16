@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Slide from "./Slide";
 import { PauseIcon, PlayIcon } from '@heroicons/react/24/solid';
+import IconButton from "./IconButton";
 
 const SlideShow = ({ slides }) => {
   const [current, setCurrent] = useState(0);
@@ -64,12 +65,11 @@ const SlideShow = ({ slides }) => {
 
       {/* Pause / Resume */}
       <div className="absolute w-full bottom-14 flex items-center justify-center md:pl-20 z-10">
-        <button
+        <IconButton
           onClick={togglePause}
-          className="backdrop-blur-md shadow-2xl text-white p-2 text-center rounded-full font-bold flex items-center justify-center"
         >
           {paused ? (<PlayIcon className="size-8" />) : (<PauseIcon className="size-8" />)}
-        </button>
+        </IconButton>
       </div>
 
     </div>

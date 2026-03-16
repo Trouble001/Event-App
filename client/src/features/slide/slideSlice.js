@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchSlidesByGroupAPI, fetchSlideGroupsAPI} from "./slideAPI";
+import { fetchSlidesByGroupAPI, fetchSlideGroupsAPI, createSlideGroupAPI} from "./slideAPI";
 
 
 // Fetch Slide Groups
@@ -20,13 +20,30 @@ export const fetchSlideGroups = createAsyncThunk(
   }
 )
 
-
 // Fetch Slides
 export const fetchSlidesByGroup = createAsyncThunk(
   "slide/fetchSlidesByGroup",
   async (slug, { rejectWithValue }) => {
     try {
       const response = await fetchSlidesByGroupAPI(slug);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message ||
+        error.response?.data?.errors?.detail ||
+        error.response?.data?.detail ||
+        "Something went wrong!"
+      );
+    }
+  }
+);
+
+// Create Slide Group
+export const createSlideGroup = createAsyncThunk(
+  "slide/createSlideGroup",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await createSlideGroupAPI(data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -93,6 +110,18 @@ const slideSlice = createSlice({
         console.log("Error:", action.error);
         state.slideLoading = false;
         state.slideError = action.payload; 
+      })
+
+      .addCase(createSlideGroup.pending, (state) => {
+        state.slideLoading = true;
+      })
+      .addCase(createSlideGroup.fulfilled, (state, action) => {
+        state.slideLoading = false;
+        state.slideSuccess = action.payload.message;
+      })
+      .addCase(createSlideGroup.rejected, (state, action) => {
+        state.slideLoading = false;
+        state.slideError = action.payload;
       })
   },
 });
