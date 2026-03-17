@@ -3,6 +3,7 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import { useDispatch } from "react-redux";
 import { createSlideGroup } from "../features/slide/slideSlice";
+// import { useNavigate } from "react-router-dom";
 
 
 const SlideGroupModal = ({ isOpen, onClose }) => {
@@ -10,6 +11,7 @@ const SlideGroupModal = ({ isOpen, onClose }) => {
     name: "", slug: "", description: "",
   });
   const dispatch = useDispatch();
+  // const navigate = useNavigate();
 
   if (!isOpen) return null;
 
@@ -22,18 +24,22 @@ const SlideGroupModal = ({ isOpen, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createSlideGroup(formData)).unwrap();
-    setFormData({ name: "", slug: "", description: "" });
-    console.log(formData);
-    onClose();
+    try {
+      dispatch(createSlideGroup(formData)).unwrap();
+      setFormData({ name: "", slug: "", description: "" });
+      onClose();
+      // navigate("/slide-groups");
+    } catch (error) {
+      console.log(error);
+    }
   }
 
 
   return (
-    <div className="w-auto h-full absolute md:pl-23 inset-0 mx-auto top-0 flex items-center justify-center z-50">
-      <div className="backdrop-blur-md bg-white/20 border border-white/30 shadow-xl rounded-2xl w-full max-w-md p-4">
+    <div className="w-auto h-full absolute bg-black/40 md:pl-23 inset-0 bg-red/60 mx-auto top-0 flex items-center justify-center z-50">
+      <div className="backdrop-blur-md bg-white/20 border border-white/30 shadow-xl rounded-2xl w-full max-w-md p-6">
         <h2 className="text-xl font-bold mb-4 text-white">Add Slide Group</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="">
           <Input
             type="text"
             name="name"
@@ -58,15 +64,15 @@ const SlideGroupModal = ({ isOpen, onClose }) => {
             onChange={handleChange}
             required
           />
-          <div className="flex justify-end gap-3">
+          <div className="flex flex-row items-center justify-between mb-0">
             <Button
               type="button"
               onClick={onClose}
-              className="bg-white/30"
+              className="bg-white/30 mb-0 mr-2"
             >
               Cancel
             </Button>
-            <Button type="submit">Save</Button>
+            <Button className="mb-0" type="submit">Save</Button>
           </div>
         </form>
       </div>

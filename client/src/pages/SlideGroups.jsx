@@ -6,14 +6,16 @@ import AppLayout from "../layouts/AppLayout";
 import IconButton from "../components/IconButton";
 import { PlusIcon } from '@heroicons/react/24/solid';
 import SlideGroupModal from "../layouts/SlideGroupModal";
+import LoadingButton from "../components/LoadingButton";
 
 const SlideGroups = () => {
   const dispatch = useDispatch();
   const { groups } = useSelector((state) => state.slide);
+  const slideGroupStatus = useSelector((state) => state.slide.status.slideGroupLoading);
   const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchSlideGroups());
+    dispatch(fetchSlideGroups()).unwrap();
   }, [dispatch]);
 
   return (
@@ -28,14 +30,17 @@ const SlideGroups = () => {
             <h4 className="text-white/80 font-normal text-sm">Add Group</h4>
           </button>
         </div>
-        {groups.map((group) => (
-          <Link
-            key={group.id}
-            to={`/slides/${group.slug}`}
-            className="w-full text-white/80 block border border-white/30 shadow-xl rounded-2xl px-4 py-2"
-          >{group.name}
-          </Link>
-        ))}
+        {slideGroupStatus === "loading" ? (<LoadingButton />) : (
+          <div>
+            {groups.map((group) => (
+              <Link
+                key={group.id}
+                to={`/slides/${group.slug}`}
+                className="w-full text-white/80 block border border-white/30 shadow-xl rounded-2xl px-4 py-2 mb-2"
+              >{group.name}</Link>
+            ))}
+          </div>
+        )}
     </div>
     <SlideGroupModal
         isOpen={openModal}

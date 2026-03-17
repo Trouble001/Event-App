@@ -63,6 +63,10 @@ const slideSlice = createSlice({
   initialState: {
     groups: [],
     slides: [],
+    status: {
+      slideLoading: "idle",
+      slideGroupLoading: "idle",
+    },
     slideLoading: false,
     slideError: null,
     slideSuccess: null,
@@ -79,48 +83,44 @@ const slideSlice = createSlice({
     builder
       /* FETCH SLIDE GROUP */
       .addCase(fetchSlideGroups.pending, (state) => {
-        state.slideLoading = true;
+        state.status.slideGroupLoading = "loading";
       })
       .addCase(fetchSlideGroups.fulfilled, (state, action) => {
-        state.slideLoading = false;
+        state.status.slideGroupLoading = "succeeded";
         state.groups = action.payload.data;
         state.slideSuccess = action.payload.message;
-        
       })
       .addCase(fetchSlideGroups.rejected, (state, action) => {
-        console.log("Payload:", action.payload);
-        console.log("Error:", action.error);
-        state.slideLoading = false;
+        state.status.slideGroupLoading = "failed";
         state.slideError = action.payload; 
       })
 
 
       /* FETCH Slides */
       .addCase(fetchSlidesByGroup.pending, (state) => {
-        state.slideLoading = true;
+        state.status.slideGroupLoading = "loading";
       })
       .addCase(fetchSlidesByGroup.fulfilled, (state, action) => {
-        state.slideLoading = false;
+        state.status.slideGroupLoading = "succeeded";
         state.slides = action.payload.data;
         state.slideSuccess = action.payload.message;
         
       })
       .addCase(fetchSlidesByGroup.rejected, (state, action) => {
-        console.log("Payload:", action.payload);
-        console.log("Error:", action.error);
-        state.slideLoading = false;
+        state.status.slideGroupLoading = "failed";
         state.slideError = action.payload; 
       })
 
       .addCase(createSlideGroup.pending, (state) => {
-        state.slideLoading = true;
+        state.status.slideGroupLoading = "loading";
       })
       .addCase(createSlideGroup.fulfilled, (state, action) => {
-        state.slideLoading = false;
+        state.groups.unshift(action.payload);
+        state.status.slideGroupLoading = "succeeded";
         state.slideSuccess = action.payload.message;
       })
       .addCase(createSlideGroup.rejected, (state, action) => {
-        state.slideLoading = false;
+        state.status.slideGroupLoading = "failed";
         state.slideError = action.payload;
       })
   },
