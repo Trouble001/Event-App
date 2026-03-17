@@ -67,7 +67,6 @@ const slideSlice = createSlice({
       slideLoading: "idle",
       slideGroupLoading: "idle",
     },
-    slideLoading: false,
     slideError: null,
     slideSuccess: null,
   },

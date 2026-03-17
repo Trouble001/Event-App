@@ -20,7 +20,7 @@ const SlideGroups = () => {
 
   return (
     <AppLayout>
-      <div className="w-full backdrop-blur-md bg-white/20 border border-white/30 shadow-xl rounded-2xl p-4">
+      <div className="glass w-full p-4">
         <div className="w-full flex items-center justify-between">
           <h1 className="text-2xl font-bold text-white mb-2">Slide Groups</h1>
           <button

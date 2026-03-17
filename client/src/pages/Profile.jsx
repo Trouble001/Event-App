@@ -25,7 +25,7 @@ const Profile = () => {
     return (
       <AppLayout>
         <div className="w-full h-full flex items-center justify-center">
-          <div className="w-10/12 md:w-8/12 lg:w-5/12 mx-auto">
+          <div className="w-10/12 md:w-8/12 lg:w-5/12 mx-auto bg-white/20 backdrop-blur-lg border border-white/30 shadow-xl rounded-2xl p-4">
             <h2 className="text-3xl text-gray-900 font-semibold mb-1">Hello There!</h2>
             <h4 className="text-xl text-gray-600">Please login to see your profile</h4>
             <button onClick={handleLogin} className="w-full shadow rounded-md text-base bg-cyan-500 hover:bg-cyan-600 text-cyan-50 mt-4 px-2 py-2 flex items-center justify-center cursor-pointer">Login</button>

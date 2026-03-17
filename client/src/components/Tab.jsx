@@ -10,7 +10,7 @@ const Tab = () => {
   ];
 
   return (
-    <div className="w-full md:w-20 md:h-screen fixed bottom-0 md:left-0 bg-white/20 backdrop-blur-md shadow-xl border-t md:border-r border-white/30">
+    <div className="w-full md:w-20 md:h-screen fixed bottom-0 md:left-0 bg-white/20 backdrop-blur-lg shadow-xl border-t md:border-r border-white/30">
       <div className="md:h-full flex md:items-center justify-around md:flex-col py-2">
         {tabs.map((tab) => {
           const Icon = tab.icon;

@@ -3,7 +3,7 @@ import { HeartIcon, ChatBubbleOvalLeftIcon, PaperAirplaneIcon, ArrowDownTrayIcon
 const EventCard = () => {
   return (
     <div className='w-full rounded border border-gray-200'>
-        <div className='w-full flex flex-row items-center justify-start p-1.5 border-b border-gray-200'>
+        <div className='glass w-full flex flex-row items-center justify-start p-1.5 border-b border-gray-200'>
             <div className='w-6 h-6 p-4 tex-sm rounded-full flex items-center justify-center border border-gray-200'>JD</div>
             <h3 className='ml-1'>John Doe</h3>
         </div>
