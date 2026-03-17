@@ -2,6 +2,6 @@
 
 @layer utilities {
   .glass {
-    @apply backdrop-blur-lg bg-white/20 border border-white/30 shadow-xl rounded-2xl;
+    @apply bg-linear-to-tr from-transparent via-cyan-900 to-transparent backdrop-blur-md border border-white/20 rounded-3xl shadow-2xl ring-1 ring-white/10;
   }
 }

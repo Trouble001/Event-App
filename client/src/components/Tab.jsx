@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { HomeIcon, UserIcon, Cog6ToothIcon, Squares2X2Icon } from "@heroicons/react/24/outline";
+import LiquidGlass from "./LiquidGlass";
 
 const Tab = () => {
   const tabs = [
@@ -10,7 +11,7 @@ const Tab = () => {
   ];
 
   return (
-    <div className="w-full md:w-20 md:h-screen fixed bottom-0 md:left-0 bg-white/20 backdrop-blur-lg shadow-xl border-t md:border-r border-white/30">
+    <LiquidGlass className="w-full md:w-20 md:h-screen fixed bottom-0 md:left-0 border-t border-b-0 border-r-0 border-l-0 md:border-r md:border-l-0 md:border-t-0 md:border-b-0 rounded-none">
       <div className="md:h-full flex md:items-center justify-around md:flex-col py-2">
         {tabs.map((tab) => {
           const Icon = tab.icon;
@@ -31,7 +32,7 @@ const Tab = () => {
           );
         })}
       </div>
-    </div>
+    </LiquidGlass>
   );
 }
 

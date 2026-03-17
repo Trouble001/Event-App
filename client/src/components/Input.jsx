@@ -19,7 +19,7 @@ const Input = ({
         onChange={onChange}
         placeholder={placeholder}
         {...rest}
-        className='w-full rounded-lg bg-white/20 border border-white/30 placeholder-white/70 text-white outline-none focus:ring-2 focus:ring-white/40 mb-4 px-4 py-2 flex items-center'
+        className='w-full glass placeholder-white/70 text-white outline-none focus:ring-2 focus:ring-white/30 mb-4 px-4 py-2 flex items-center'
     />
       {rightIcon && (
           <button

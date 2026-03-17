@@ -120,7 +120,7 @@ const Register = () => {
           value={formData.gender}
           onChange={handleChange}
           required
-          className='w-full rounded-lg bg-white/20 border border-white/30 placeholder-white/70 text-white outline-none focus:ring-2 focus:ring-white/40 appearance-none mb-4 px-4 py-2 flex items-center'
+          className='w-full glass placeholder-white/70 text-white outline-none focus:ring-2 focus:ring-white/30 appearance-none mb-4 px-4 py-2 flex items-center'
           
         >
           <option className="text-black" value="">Select Gender</option>
