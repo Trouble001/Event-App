@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import AppLayout from "../layouts/AppLayout";
+import Button from "../components/Button";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
@@ -25,10 +26,10 @@ const Profile = () => {
     return (
       <AppLayout>
         <div className="w-full h-full flex items-center justify-center">
-          <div className="w-10/12 md:w-8/12 lg:w-5/12 mx-auto bg-white/20 backdrop-blur-lg border border-white/30 shadow-xl rounded-2xl p-4">
-            <h2 className="text-3xl text-gray-900 font-semibold mb-1">Hello There!</h2>
-            <h4 className="text-xl text-gray-600">Please login to see your profile</h4>
-            <button onClick={handleLogin} className="w-full shadow rounded-md text-base bg-cyan-500 hover:bg-cyan-600 text-cyan-50 mt-4 px-2 py-2 flex items-center justify-center cursor-pointer">Login</button>
+          <div className="w-10/12 md:w-8/12 lg:w-5/12 mx-auto glass p-6">
+            <h2 className="text-2xl text-white font-semibold mb-1">Hello There!</h2>
+            <h4 className="text-lg text-white/60 mb-2">Please login to see your profile</h4>
+            <Button onClick={handleLogin} className="mb-0">Login</Button>
           </div>
         </div>
       </AppLayout>
@@ -37,22 +38,18 @@ const Profile = () => {
 
   return (
     <AppLayout>
-      <div className="w-full flex items-center justify-center">
-        <div className="w-11/12 mx-auto">
-          
-          <div className="w-full flex items-center justify-start">
-            <div className="w-20 h-20 md:w-30 md:h-30 rounded-full bg-gray-400 mr-4"></div>
-            <div className="w-6/12">
-              <h2 className="text-xl md:text-3xl font-medium text-gray-900">{user.full_name}</h2>
-              <p className="text-sm md:text-md text-gray-400">{user.email}</p>
-              <div className="w-full flex flex-row items-center justify-center mt-4">
-                <button onClick={handleEdit} className="w-full rounded-full bg-gray-600 hover:bg-gray-500 text-gray-50 ms:text-sm text-xs md:py-2 py-1 px-4 flex flex-row items-center justify-center cursor-pointer mr-4">Edit Profile</button>
-                <button onClick={handleLogout} className="w-full rounded-full bg-rose-500 hover:bg-rose-600 text-rose-50 ms:text-sm text-xs md:py-2 py-1 px-4 flex flex-row items-center justify-center cursor-pointer">Logout</button>
-              </div>
-            </div>
-          </div>
-
-
+      <div className="w-full glass flex flex-col items-center justify-center py-4">
+        <div className="w-16 h-16 md:w-20 md:h-20 text-4xl text-white rounded-full bg-gray-400 flex items-center justify-center">{user.full_name[0]}</div>
+        <h2 className="text-xl md:text-3xl font-medium text-white">{user.full_name}</h2>
+        <p className="text-sm md:text-md text-white/80">{user.email}</p>
+        <div className="w-full max-w-sm flex flex-row items-center justify-center mt-4">
+          <Button
+            className="py-1 px-0 bg-white/20 mr-2 text-sm"
+            onClick={handleEdit}>Edit</Button>
+          <Button
+            className="py-1 px-0 text-sm"
+            onClick={handleLogout}
+            >Logout</Button>
         </div>
       </div>
     </AppLayout>

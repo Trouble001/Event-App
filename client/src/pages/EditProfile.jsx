@@ -42,8 +42,8 @@ const EditProfile = () => {
   return (
     <AppLayout>
         <div className="w-full h-screen flex items-center justify-center">
-        <form onSubmit={handleSubmit} className="w-6/12 px-4 py-4 border border-gray-200 rounded shadow">
-        <h2 className="text-2xl mb-4">Edit Profile</h2>
+        <form onSubmit={handleSubmit} className="w-6/12 glass p-6">
+        <h2 className="text-2xl text-white mb-4">Edit Profile</h2>
             <Input
                 type="text"
                 name="full_name"
@@ -56,12 +56,12 @@ const EditProfile = () => {
                 name="gender"
                 value={formData.gender || ''}
                 onChange={handleChange}
-                className='w-full outline text-base outline-gray-200 rounded-md bg-gray-50 mb-4 px-2 py-2 flex items-center justify-center'
+                className='w-full glass placeholder-white/70 text-white outline-none focus:ring-2 focus:ring-white/30 appearance-none mb-4 px-4 py-2 flex items-center'
             >
-                <option value="">Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                <option className="text-black" value="">Select Gender</option>
+                <option className="text-black" value="male">Male</option>
+                <option className="text-black" value="female">Female</option>
+                <option className="text-black" value="other">Other</option>
             </select>
             <Button type="submit" disabled={!formData.full_name || !formData.gender}>
                 {loading ? "Updating..." : "Update Profile"}

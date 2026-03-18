@@ -1,8 +1,9 @@
 import { useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createSlideGroup } from "../features/slide/slideSlice";
+import LoadingButton from "../components/LoadingButton";
 // import { useNavigate } from "react-router-dom";
 
 
@@ -11,6 +12,8 @@ const SlideGroupModal = ({ isOpen, onClose }) => {
     name: "", slug: "", description: "",
   });
   const dispatch = useDispatch();
+  const createStatus = useSelector((state) => state.slide.status.create);
+
   // const navigate = useNavigate();
 
   if (!isOpen) return null;
@@ -72,7 +75,12 @@ const SlideGroupModal = ({ isOpen, onClose }) => {
             >
               Cancel
             </Button>
-            <Button className="mb-0" type="submit">Save</Button>
+            <Button
+              className="mb-0" type="submit"
+              disabled={createStatus === 'loading'}
+              >
+              {createStatus === 'loading' ? (<LoadingButton />) : "Save"}
+            </Button>
           </div>
         </form>
       </div>

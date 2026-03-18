@@ -19,6 +19,7 @@ import Dasboard from "./pages/Dasboard";
 import UserDetail from "./pages/UserDetail";
 import SlideGroups from "./pages/SlideGroups";
 import Slides from "./pages/Slides";
+import Users from "./pages/Users";
 
 function App() {
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/dashboard" element={<Dasboard />} />
+        <Route path="/dashboard/users" element={<Users />} />
         <Route path="/users/:id" element={<UserDetail />} />
         <Route path="/slide-groups" element={<SlideGroups />} />
         <Route path="/slides/:slug" element={<Slides />} />

@@ -66,6 +66,7 @@ const slideSlice = createSlice({
     status: {
       slideLoading: "idle",
       slideGroupLoading: "idle",
+      create: "idle",
     },
     slideError: null,
     slideSuccess: null,
@@ -111,15 +112,15 @@ const slideSlice = createSlice({
       })
 
       .addCase(createSlideGroup.pending, (state) => {
-        state.status.slideGroupLoading = "loading";
+        state.status.create = "loading";
       })
       .addCase(createSlideGroup.fulfilled, (state, action) => {
         state.groups.unshift(action.payload);
-        state.status.slideGroupLoading = "succeeded";
+        state.status.create = "succeeded";
         state.slideSuccess = action.payload.message;
       })
       .addCase(createSlideGroup.rejected, (state, action) => {
-        state.status.slideGroupLoading = "failed";
+        state.status.create = "failed";
         state.slideError = action.payload;
       })
   },
