@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { editProfile, fetchMe } from '../features/auth/authSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import AppLayout from "../layouts/AppLayout";
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -41,9 +41,9 @@ const EditProfile = () => {
 
   return (
     <AppLayout>
-        <div className="w-full h-screen flex items-center justify-center">
+      <div className="w-full h-screen flex items-center justify-center">
         <form onSubmit={handleSubmit} className="w-6/12 glass p-6">
-        <h2 className="text-2xl text-white mb-4">Edit Profile</h2>
+        <h2 className="text-2xl text-white mb-4 text-center">Edit Profile</h2>
             <Input
                 type="text"
                 name="full_name"
@@ -66,8 +66,9 @@ const EditProfile = () => {
             <Button type="submit" disabled={!formData.full_name || !formData.gender}>
                 {loading ? "Updating..." : "Update Profile"}
             </Button>
+            <div className="w-full flex items-center justify-center text-white/80 hover:text-white text-md mt-0"><Link to="/profile">Cancel</Link></div>
         </form>
-        </div>
+      </div>
     </AppLayout>
   );
 };

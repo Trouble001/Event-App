@@ -11,7 +11,7 @@ const Slide = ({ slide, active }) => {
         backgroundAttachment: "fixed",
       }}
       >
-      <div className="relative text-center backdrop-blur-sm bg-black/70 border border-white/30 shadow-2xl rounded-2xl p-8">
+      <div className="relative text-center glass p-8">
         <h2 className="text-2xl md:text-3xl text-white font-bold mb-4">{slide.title}</h2>
         <h2 className="text-md md:text-xl text-white/90 mb-2">{slide.subtitle}</h2>
         <p className="text-sm md:text-md text-white/70">{slide.text}</p>

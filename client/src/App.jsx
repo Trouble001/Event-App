@@ -49,7 +49,7 @@ function App() {
         <Route path="/dashboard" element={<Dasboard />} />
         <Route path="/dashboard/users" element={<Users />} />
         <Route path="/users/:id" element={<UserDetail />} />
-        <Route path="/slide-groups" element={<SlideGroups />} />
+        <Route path="dashboard/slide-groups" element={<SlideGroups />} />
         <Route path="/slides/:slug" element={<Slides />} />
       </Routes>
       <Tab />
