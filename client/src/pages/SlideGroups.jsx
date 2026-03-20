@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSlideGroups } from "../features/slide/slideSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AppLayout from "../layouts/AppLayout";
 import IconButton from "../components/IconButton";
-import { PlusIcon } from '@heroicons/react/24/solid';
+import { PlusIcon, ArrowLeftIcon } from '@heroicons/react/24/solid';
 import SlideGroupModal from "../layouts/SlideGroupModal";
 import LoadingButton from "../components/LoadingButton";
 
@@ -13,6 +13,7 @@ const SlideGroups = () => {
   const { groups } = useSelector((state) => state.slide);
   const slideGroupStatus = useSelector((state) => state.slide.status.slideGroupLoading);
   const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchSlideGroups()).unwrap();
@@ -22,15 +23,18 @@ const SlideGroups = () => {
     <AppLayout>
       <div className="glass w-full p-4">
         <div className="w-full flex items-center justify-between">
+          <IconButton onClick={() => navigate("/dashboard")}><ArrowLeftIcon className="size-6" /></IconButton>
           <h1 className="text-2xl font-bold text-white">Slide Groups</h1>
-          <button
-            className="border border-white/30 shadow-xl rounded-3xl flex items-center justify-center px-3 py-1.5 gap-2 cursor-pointer"
+          <IconButton
+            className=""
             onClick={() => setOpenModal(true)}>
-            <PlusIcon className="size-6 text-white/80" />
-            <h4 className="text-white/80 font-normal text-sm">Add Group</h4>
-          </button>
+            <PlusIcon className="size-6" />
+            <h4 className="font-normal text-sm">Add Group</h4>
+          </IconButton>
         </div>
-        {slideGroupStatus === "loading" ? (<LoadingButton />) : (
+        {slideGroupStatus === "loading" ? (
+          <div className="w-full flex items-center justify-center mt-8"><LoadingButton /></div>
+        ) : (
           <div>
             {groups.map((group) => (
               <Link

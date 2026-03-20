@@ -72,6 +72,11 @@ const adminSlice = createSlice({
     users: [],
     selectedUser: null,
     adminLoading: false,
+    status: {
+      users: "idle",
+      user: "idle",
+      update: "idle",
+    },
     adminError: null,
     adminSuccess: null,
   },
@@ -87,38 +92,36 @@ const adminSlice = createSlice({
     builder
       /* FETCH USERS */
       .addCase(fetchUsers.pending, (state) => {
-        state.adminLoading = true;
+        state.status.users = "loading";
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
-        state.adminLoading = false;
+        state.status.users = "succeeded";
         state.users = action.payload.data;
         state.adminSuccess = action.payload.message;
         
       })
       .addCase(fetchUsers.rejected, (state, action) => {
-        console.log("Payload:", action.payload);
-        console.log("Error:", action.error);
-        state.adminLoading = false;
+        state.status.users = "failed";
         state.adminError = action.payload; 
       })
 
       /* FETCH SINGLE USER */
       .addCase(fetchUser.pending, (state) => {
-        state.adminLoading = true;
+        state.status.user = "loading";
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
-        state.adminLoading = false;
+        state.status.user = "succeeded";
         state.selectedUser = action.payload.data;
         state.adminSuccess = action.payload.message; 
       })
       .addCase(fetchUser.rejected, (state, action) => {
-        state.adminLoading = false;
+        state.status.user = "failed";
         state.adminError = action.payload; 
       })
 
       /* UPDATE USER */
       .addCase(updateUser.pending, (state) => {
-        state.adminLoading = true;
+        state.status.update = "loading";
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.selectedUser = action.payload.data;
@@ -128,12 +131,12 @@ const adminSlice = createSlice({
         // if (index !== -1) {
         //   state.users[index] = action.payload;
         // }
-        state.adminLoading = false;
+        state.status.update = "succeeded";
         state.adminSuccess = action.payload.message;
         console.log("Success:", action.payload.message);
       })
       .addCase(updateUser.rejected, (state, action) => {
-        state.adminLoading = false;
+        state.status.update = "failed";
         state.adminError = action.payload; 
       })
 

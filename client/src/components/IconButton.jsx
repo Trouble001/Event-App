@@ -1,10 +1,14 @@
 import React from 'react'
+import { twMerge } from 'tailwind-merge'
 
-const IconButton = ({ onClick, children }) => {
+const IconButton = ({ onClick, children, className = "" }) => {
   return (
     <button
         onClick={onClick}
-        className="backdrop-blur-md shadow-2xl text-white p-2 text-center rounded-full font-bold flex items-center justify-center"
+        className={twMerge(
+          "text-white/80 border border-white/30 rounded-3xl px-3 py-1.5 gap-2 text-center flex items-center justify-center cursor-pointer",
+        className
+      )}
     >{children}</button>
   )
 }

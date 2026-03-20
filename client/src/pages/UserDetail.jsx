@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUser, updateUser } from "../features/admin/adminSlice";
 import AppLayout from "../layouts/AppLayout";
+import Input from "../components/Input";
+import Button from "../components/Button";
+import LoadingButton from "../components/LoadingButton";
 
 const UserDetail = () => {
 
@@ -11,6 +14,8 @@ const UserDetail = () => {
   const navigate = useNavigate();
 
   const { selectedUser } = useSelector((state) => state.admin);
+    const userStatus = useSelector((state) => state.admin.status.user);
+
 
   const [formData, setFormData] = useState({
     full_name: "",
@@ -54,55 +59,54 @@ const UserDetail = () => {
 
   return (
     <AppLayout>
-      <h2 className="text-2xl font-bold mb-4">
-        Update User
-      </h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
+      <div className="w-full h-screen flex items-center justify-center">
+        <form onSubmit={handleSubmit} className="w-6/12 glass p-6">
+        <h2 className="text-2xl text-white mb-4 text-center">Update User</h2>
+        <Input
           name="full_name"
           value={formData.full_name}
           onChange={handleChange}
           placeholder="Full Name"
-          className="border p-2 w-full"
+          
         />
 
-        <input
+        <Input
           name="email"
           value={formData.email}
           onChange={handleChange}
           placeholder="Email"
-          className="border p-2 w-full"
+          
         />
 
-        <input
+        <Input
           name="phone_number"
           value={formData.phone_number}
           onChange={handleChange}
           placeholder="Phone"
-          className="border p-2 w-full"
+          
         />
 
         <select
           name="gender"
           value={formData.gender}
           onChange={handleChange}
-          className="border p-2 w-full"
+          className="w-full glass placeholder-white/70 text-white outline-none focus:ring-2 focus:ring-white/30 appearance-none mb-4 px-4 py-2 flex items-center"
         >
-          <option value="">Select Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
+          <option className="text-black" value="">Select Gender</option>
+          <option className="text-black" value="male">Male</option>
+          <option className="text-black" value="female">Female</option>
+          <option className="text-black" value="other">Other</option>
         </select>
 
-        <button
+        <Button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer"
-        >
-          Update User
-        </button>
+          disabled={userStatus === "loading"}
+          >{userStatus === "loading" ? (<LoadingButton />) : "Update"}
+          </Button>
+          <div className="w-full flex items-center justify-center text-white/80 hover:text-white text-md mt-0"><Link to="/dashboard/users">Cancel</Link></div>
 
       </form>
-
+    </div>
     </AppLayout>
   );
 };
