@@ -3,25 +3,18 @@ from .models import Slide, SlideGroup
 
 
 class SlideGroupSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = SlideGroup
         fields = "__all__"
 
 
 class SlideSerializer(serializers.ModelSerializer):
-
+    image = serializers.SerializerMethodField()
+    
     class Meta:
         model = Slide
-        fields = [
-            "id",
-            "title",
-            "subtitle",
-            "text",
-            "image",
-            "duration",
-            "order",
-        ]
+        fields = "__all__"
+        read_only_fields = ["order"]
 
     def get_image(self, obj):
         request = self.context.get("request")
@@ -35,5 +28,4 @@ class SlideSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 "Duration must be at least 1000ms"
             )
-
         return value

@@ -39,7 +39,7 @@ const SlideGroups = () => {
             {groups.map((group) => (
               <Link
                 key={group.id}
-                to={`/slides/${group.slug}`}
+                to={`/dashboard/slide-groups/slides/${group.slug}`}
                 className="w-full text-white/80 block border border-white/30 shadow-xl rounded-3xl px-4 py-2 mt-4"
               >{group.name}</Link>
             ))}

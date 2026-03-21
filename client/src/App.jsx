@@ -20,6 +20,7 @@ import UserDetail from "./pages/UserDetail";
 import SlideGroups from "./pages/SlideGroups";
 import Slides from "./pages/Slides";
 import Users from "./pages/Users";
+import SlidesDetail from "./pages/SlidesDetails";
 
 function App() {
   const dispatch = useDispatch();
@@ -48,6 +49,7 @@ function App() {
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/dashboard" element={<Dasboard />} />
         <Route path="/dashboard/users" element={<Users />} />
+        <Route path="/dashboard/slide-groups/slides/:slug" element={<SlidesDetail />} />
         <Route path="/users/:id" element={<UserDetail />} />
         <Route path="dashboard/slide-groups" element={<SlideGroups />} />
         <Route path="/slides/:slug" element={<Slides />} />

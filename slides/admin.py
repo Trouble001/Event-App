@@ -3,13 +3,11 @@ from .models import SlideGroup, Slide
 
 
 class SlideInline(admin.TabularInline):
-
     model = Slide
     extra = 1
 
 @admin.register(SlideGroup)
 class SlideGroupAdmin(admin.ModelAdmin):
-
     list_display = ["name", "slug", "created_at"]
     prepopulated_fields = {"slug": ("name",)}
     inlines = [SlideInline]
@@ -18,3 +16,4 @@ class SlideGroupAdmin(admin.ModelAdmin):
 class SlideAdmin(admin.ModelAdmin):
     list_display = ["title", "group", "order"]
     list_filter = ["group"]
+    exclude = ("order",)

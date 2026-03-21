@@ -10,7 +10,7 @@ const Slides = () => {
   const { slides } = useSelector((state) => state.slide);
   
   useEffect(() => {
-    dispatch(fetchSlidesByGroup(slug));
+    dispatch(fetchSlidesByGroup({ slug })).unwrap();
   }, [dispatch, slug]);
 
   return <SlideShow slides={slides} />;

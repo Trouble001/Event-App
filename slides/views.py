@@ -1,6 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny, IsAdminUser
 from .models import Slide, SlideGroup
+from django.db.models import Max
 from .serializers import SlideGroupSerializer, SlideSerializer
 from common.responses import success_response, error_response
 
@@ -30,8 +31,7 @@ class SlideGroupViewSet(ModelViewSet):
             )
         except Exception as e:
             return error_response(
-                message="Something went wrong",
-                errors=str(e),
+                message=f"Something went wrong: {str(e)}"
             )
 
 
@@ -40,20 +40,44 @@ class SlideViewSet(ModelViewSet):
     serializer_class = SlideSerializer
 
     def get_permissions(self):
-        if self.action == "list" or self.action == "retrieve":
+        if self.action in ["list", "retrieve"]:
             return [AllowAny()]
         return [IsAdminUser()]
 
+    # ✅ Always return ordered slides
     def get_queryset(self):
-        queryset = Slide.objects.all()
+        queryset = Slide.objects.all().order_by("order")
+
+        group_id = self.request.query_params.get("group")
         group_slug = self.request.query_params.get("group")
-        if group_slug:
+
+        if group_id:
+            queryset = queryset.filter(group__id=group_id)
+
+        elif group_slug:
             queryset = queryset.filter(group__slug=group_slug)
+
         return queryset
+
+    # ✅ AUTO ASSIGN ORDER
+    def perform_create(self, serializer):
+        group = serializer.validated_data.get("group")
+
+        if not group:
+            raise Exception("Group is required")
+
+        last_order = Slide.objects.filter(group=group).aggregate(
+            max_order=Max("order")
+        )["max_order"]
+
+        new_order = (last_order or 0) + 1
+
+        serializer.save(order=new_order)
 
     def list(self, request, *args, **kwargs):
         try:
             queryset = self.get_queryset()
+
             if not queryset.exists():
                 return error_response(message="No slides found")
 
@@ -70,6 +94,5 @@ class SlideViewSet(ModelViewSet):
 
         except Exception as e:
             return error_response(
-                message="Something went wrong",
-                errors=str(e)
+                message=f"Something went wrong: {str(e)}"
             )

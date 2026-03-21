@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchSlidesByGroupAPI, fetchSlideGroupsAPI, createSlideGroupAPI} from "./slideAPI";
+import { fetchSlidesByGroupAPI, fetchSlideGroupsAPI, createSlideGroupAPI, createSlideAPI} from "./slideAPI";
 
 
 // Fetch Slide Groups
@@ -23,9 +23,9 @@ export const fetchSlideGroups = createAsyncThunk(
 // Fetch Slides
 export const fetchSlidesByGroup = createAsyncThunk(
   "slide/fetchSlidesByGroup",
-  async (slug, { rejectWithValue }) => {
+  async ({ groupId, slug }, { rejectWithValue }) => {
     try {
-      const response = await fetchSlidesByGroupAPI(slug);
+      const response = await fetchSlidesByGroupAPI({ groupId, slug });
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -44,6 +44,24 @@ export const createSlideGroup = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await createSlideGroupAPI(data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message ||
+        error.response?.data?.errors?.detail ||
+        error.response?.data?.detail ||
+        "Something went wrong!"
+      );
+    }
+  }
+);
+
+// Create Slide Group
+export const createSlide = createAsyncThunk(
+  "slide/createSlide",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await createSlideAPI(data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -115,11 +133,24 @@ const slideSlice = createSlice({
         state.status.create = "loading";
       })
       .addCase(createSlideGroup.fulfilled, (state, action) => {
-        state.groups.unshift(action.payload);
+        state.groups.unshift(action.payload.data);
         state.status.create = "succeeded";
         state.slideSuccess = action.payload.message;
       })
       .addCase(createSlideGroup.rejected, (state, action) => {
+        state.status.create = "failed";
+        state.slideError = action.payload;
+      })
+
+      .addCase(createSlide.pending, (state) => {
+        state.status.create = "loading";
+      })
+      .addCase(createSlide.fulfilled, (state, action) => {
+        state.slides.push(action.payload.data);
+        state.status.create = "succeeded";
+        state.slideSuccess = action.payload.message;
+      })
+      .addCase(createSlide.rejected, (state, action) => {
         state.status.create = "failed";
         state.slideError = action.payload;
       })

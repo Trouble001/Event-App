@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.db.models import Max
 
 class SlideGroup(models.Model):
     name = models.CharField(max_length=100)
@@ -45,6 +45,14 @@ class Slide(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True
     )
+
+    def save(self, *args, **kwargs):
+        if self.order == 0:
+            last_order = Slide.objects.filter(group=self.group).aggregate(
+                max_order=Max("order")
+            )["max_order"]
+            self.order = (last_order or 0) + 1
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ["order"]
