@@ -9,7 +9,7 @@ export const fetchSlidesByGroupAPI = ({ groupId, slug }) => {
   }
 
   if (slug) {
-    return axiosInstance.get(`/slides/?group=${slug}`);
+    return axiosInstance.get(`/slides/?slug=${slug}`);
   }
 
   throw new Error("Either groupId or slug is required");

@@ -49,7 +49,7 @@ class SlideViewSet(ModelViewSet):
         queryset = Slide.objects.all().order_by("order")
 
         group_id = self.request.query_params.get("group")
-        group_slug = self.request.query_params.get("group")
+        group_slug = self.request.query_params.get("slug")
 
         if group_id:
             queryset = queryset.filter(group__id=group_id)
@@ -79,7 +79,10 @@ class SlideViewSet(ModelViewSet):
             queryset = self.get_queryset()
 
             if not queryset.exists():
-                return error_response(message="No slides found")
+                return success_response(
+                    data=[],
+                    message="No slides found"
+                )
 
             serializer = self.get_serializer(
                 queryset,

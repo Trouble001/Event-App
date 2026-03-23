@@ -4,7 +4,7 @@ import Button from "../components/Button";
 import { useDispatch } from "react-redux";
 // import { createSlideGroup } from "../features/slide/slideSlice";
 import LoadingButton from "../components/LoadingButton";
-import { createSlide } from "../features/slide/slideSlice";
+import { createSlide, fetchSlidesByGroup } from "../features/slide/slideSlice";
 // import { createSlide } from "../features/slide/slideSlice";
 // import { useNavigate } from "react-router-dom";
 
@@ -18,7 +18,7 @@ const SlideModal = ({ isOpen, onClose, groupId }) => {
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
    e.preventDefault();
     const formData = new FormData();
     formData.append("title", title);
@@ -26,8 +26,13 @@ const SlideModal = ({ isOpen, onClose, groupId }) => {
     formData.append("image", image);
     formData.append("group", groupId);
 
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+
     try {
-        dispatch(createSlide(formData)).unwrap();
+        await dispatch(createSlide(formData)).unwrap();
+        dispatch(fetchSlidesByGroup({ groupId })).unwrap();
         onClose();
     } catch (error) {
         console.log("Error: ", error);

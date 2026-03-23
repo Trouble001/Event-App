@@ -21,6 +21,7 @@ import SlideGroups from "./pages/SlideGroups";
 import Slides from "./pages/Slides";
 import Users from "./pages/Users";
 import SlidesDetail from "./pages/SlidesDetails";
+import Setting from "./pages/Setting";
 
 function App() {
   const dispatch = useDispatch();
@@ -53,6 +54,7 @@ function App() {
         <Route path="/users/:id" element={<UserDetail />} />
         <Route path="dashboard/slide-groups" element={<SlideGroups />} />
         <Route path="/slides/:slug" element={<Slides />} />
+        <Route path="/setting" element={<Setting />} />
       </Routes>
       <Tab />
     </BrowserRouter>

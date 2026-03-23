@@ -12,7 +12,7 @@ const Tab = () => {
     { name: "Home", path: "/", icon: HomeIcon },
     { name: "Dashboard", path: "/dashboard", icon: Squares2X2Icon, roles: ["admin"]},
     { name: "Profile", path: "/profile", icon: UserIcon },
-    { name: "Settings", path: "/login", icon: Cog6ToothIcon },
+    { name: "Settings", path: "/setting", icon: Cog6ToothIcon },
   ];
 
   const filteredTabs = tabs.filter((tab) => {

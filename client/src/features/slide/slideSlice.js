@@ -28,6 +28,7 @@ export const fetchSlidesByGroup = createAsyncThunk(
       const response = await fetchSlidesByGroupAPI({ groupId, slug });
       return response.data;
     } catch (error) {
+      console.log("API Error:". error);
       return rejectWithValue(
         error.response?.data?.message ||
         error.response?.data?.errors?.detail ||
@@ -99,7 +100,7 @@ const slideSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      /* FETCH SLIDE GROUP */
+      /* FETCH SLIDE GROUPS */
       .addCase(fetchSlideGroups.pending, (state) => {
         state.status.slideGroupLoading = "loading";
       })
@@ -114,21 +115,23 @@ const slideSlice = createSlice({
       })
 
 
-      /* FETCH Slides */
+      /* FETCH SLIDES BY GROUP */
       .addCase(fetchSlidesByGroup.pending, (state) => {
-        state.status.slideGroupLoading = "loading";
+        state.status.slideLoading = "loading";
+        state.slides = [];
       })
       .addCase(fetchSlidesByGroup.fulfilled, (state, action) => {
-        state.status.slideGroupLoading = "succeeded";
-        state.slides = action.payload.data;
+        state.status.slideLoading = "succeeded";
+        state.slides = action.payload.data || [];
         state.slideSuccess = action.payload.message;
         
       })
       .addCase(fetchSlidesByGroup.rejected, (state, action) => {
-        state.status.slideGroupLoading = "failed";
+        state.status.slideLoading = "failed";
         state.slideError = action.payload; 
       })
 
+      /* CREATE SLIDE GROUP */
       .addCase(createSlideGroup.pending, (state) => {
         state.status.create = "loading";
       })
@@ -142,11 +145,15 @@ const slideSlice = createSlice({
         state.slideError = action.payload;
       })
 
+      /* CREATE SLIDE */
       .addCase(createSlide.pending, (state) => {
         state.status.create = "loading";
       })
       .addCase(createSlide.fulfilled, (state, action) => {
-        state.slides.push(action.payload.data);
+        state.slides = [
+          ...(state.slides || []),
+          action.payload.data
+        ].sort((a, b) => a.order - b.order);
         state.status.create = "succeeded";
         state.slideSuccess = action.payload.message;
       })

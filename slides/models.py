@@ -1,10 +1,12 @@
 from django.db import models
 from django.db.models import Max
 
+
 class SlideGroup(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True)
+    image = models.ImageField(upload_to="slides/", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -16,35 +18,13 @@ class SlideGroup(models.Model):
 
 class Slide(models.Model):
     group = models.ForeignKey(
-        SlideGroup,
-        on_delete=models.CASCADE,
-        related_name="slides"
-    )
-
+        SlideGroup, on_delete=models.CASCADE, related_name="slides")
     title = models.CharField(max_length=200)
-
-    subtitle = models.CharField(
-        max_length=200,
-        blank=True
-    )
-
+    subtitle = models.CharField(max_length=200, blank=True)
     text = models.TextField(blank=True)
-
-    image = models.ImageField(
-        upload_to="slides/"
-    )
-
-    duration = models.PositiveIntegerField(
-        default=6000
-    )
-
-    order = models.PositiveIntegerField(
-        default=0
-    )
-
-    created_at = models.DateTimeField(
-        auto_now_add=True
-    )
+    duration = models.PositiveIntegerField(default=6000)
+    order = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         if self.order == 0:

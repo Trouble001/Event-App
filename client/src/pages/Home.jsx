@@ -8,7 +8,6 @@ const Home = () => {
   const { groups } = useSelector((state) => state.slide);
   const dispatch = useDispatch();
 
-
   useEffect(() => {
       dispatch(fetchSlideGroups()).unwrap();
     }, [dispatch]);
