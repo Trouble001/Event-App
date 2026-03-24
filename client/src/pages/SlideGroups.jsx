@@ -36,7 +36,7 @@ const SlideGroups = () => {
           <div className="w-full flex items-center justify-center mt-8"><LoadingButton /></div>
         ) : (
           <div>
-            {groups.map((group) => (
+            {groups?.filter(Boolean).map((group) => (
               <Link
                 key={group.id}
                 to={`/dashboard/slide-groups/slides/${group.slug}`}

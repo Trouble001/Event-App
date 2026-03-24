@@ -13,7 +13,6 @@ const SlideModal = ({ isOpen, onClose, groupId }) => {
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
-  const [image, setImage] = useState(null);
 
 
   if (!isOpen) return null;
@@ -23,7 +22,6 @@ const SlideModal = ({ isOpen, onClose, groupId }) => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("text", text);
-    formData.append("image", image);
     formData.append("group", groupId);
 
     for (let pair of formData.entries()) {
@@ -32,7 +30,9 @@ const SlideModal = ({ isOpen, onClose, groupId }) => {
 
     try {
         await dispatch(createSlide(formData)).unwrap();
-        dispatch(fetchSlidesByGroup({ groupId })).unwrap();
+        await dispatch(fetchSlidesByGroup({ groupId })).unwrap();
+        setTitle(""),
+        setText("");
         onClose();
     } catch (error) {
         console.log("Error: ", error);
@@ -61,10 +61,7 @@ const SlideModal = ({ isOpen, onClose, groupId }) => {
             onChange={(e) => setText(e.target.value)}
             required
           />
-         <input
-            type="file"
-            onChange={(e) => setImage(e.target.files[0])}
-          />
+        
           <div className="flex flex-row items-center justify-between mb-0">
             <Button
               type="button"

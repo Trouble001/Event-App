@@ -2,15 +2,16 @@ import { useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { createSlideGroup } from "../features/slide/slideSlice";
+import { createSlideGroup, fetchSlideGroups } from "../features/slide/slideSlice";
 import LoadingButton from "../components/LoadingButton";
 // import { useNavigate } from "react-router-dom";
 
 
 const SlideGroupModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
-    name: "", slug: "", description: "",
+    name: "", slug: "", description: "", image: null,
   });
+
   const dispatch = useDispatch();
   const createStatus = useSelector((state) => state.slide.status.create);
 
@@ -19,19 +20,34 @@ const SlideGroupModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const handleChange = (e) => {
+    const { name, value, files } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: files ? files[0] : value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const data = new FormData();
+
+    data.append("name", formData.name);
+    data.append("slug", formData.slug);
+    data.append("description", formData.description);
+
+    if (formData.image instanceof File) {
+      data.append("image", formData.image);
+    }
+
+    for (let pair of data.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+
     try {
-      dispatch(createSlideGroup(formData)).unwrap();
-      setFormData({ name: "", slug: "", description: "" });
+      await dispatch(createSlideGroup(data)).unwrap();
+      await dispatch(fetchSlideGroups()).unwrap();
+      setFormData({ name: "", slug: "", description: "", image: null });
       onClose();
-      // navigate("/slide-groups");
     } catch (error) {
       console.log(error);
     }
@@ -66,6 +82,11 @@ const SlideGroupModal = ({ isOpen, onClose }) => {
             value={formData.description}
             onChange={handleChange}
             required
+          />
+          <input
+            type="file"
+            name="image"
+            onChange={handleChange}
           />
           <div className="flex flex-row items-center justify-between mb-0">
             <Button

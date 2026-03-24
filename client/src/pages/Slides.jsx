@@ -29,7 +29,18 @@ const Slides = () => {
       {slides?.length === 0 ? (
         <div className="text-md text-center text-white pt-20">No Slides Found</div>
       ) : (
-        <SlideShow slides={slides} selectedGroup={selectedGroup} />
+        <div
+          className="w-full h-full"
+          style={{ 
+            backgroundImage: `url(${selectedGroup?.image})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundAttachment: "fixed",
+        }}
+      >
+          <SlideShow slides={slides} />
+        </div>
       )}
       </div>
     )}

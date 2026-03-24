@@ -3,7 +3,7 @@ import Slide from "./Slide";
 import { PauseIcon, PlayIcon } from '@heroicons/react/24/solid';
 import IconButton from "./IconButton";
 
-const SlideShow = ({ slides, selectedGroup }) => {
+const SlideShow = ({ slides }) => {
   const [current, setCurrent] = useState(0);
   const [progress, setProgress] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -46,13 +46,6 @@ const SlideShow = ({ slides, selectedGroup }) => {
   return (
     <div className="relative w-full h-screen overflow-hidden transition-all duration-700"
       onClick={togglePause}
-      style={{ 
-        backgroundImage: `url(${selectedGroup?.image})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-      }}
       >
 
       {slides.map((slide, index) => (

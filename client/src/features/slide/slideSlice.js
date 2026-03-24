@@ -136,7 +136,7 @@ const slideSlice = createSlice({
         state.status.create = "loading";
       })
       .addCase(createSlideGroup.fulfilled, (state, action) => {
-        state.groups.unshift(action.payload.data);
+        state.groups = [action.payload.data, ...state.groups];
         state.status.create = "succeeded";
         state.slideSuccess = action.payload.message;
       })
