@@ -61,7 +61,10 @@ export const editProfile = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await editProfileAPI(data);
-      return response.data.data;
+      return {
+        user: response.data.data,
+        message: response.data.message || "Profile updated successfully",
+      };
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || "Failed to update profile"
@@ -150,7 +153,7 @@ const authSlice = createSlice({
         state.successMessage = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.status.login = "Succeeded";
+        state.status.login = "succeeded";
         state.user = action.payload.user;
         state.successMessage = action.payload.message;
         state.authChecked = true;
@@ -198,8 +201,8 @@ const authSlice = createSlice({
       })
       .addCase(editProfile.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
-        state.successMessage = action.payload || "Profile updated successfully";
+        state.user = action.payload.user;
+        state.successMessage = action.payload.message;
       })
       .addCase(editProfile.rejected, (state, action) => {
         state.loading = false;

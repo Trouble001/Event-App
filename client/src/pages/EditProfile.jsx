@@ -24,6 +24,15 @@ const EditProfile = () => {
     }
   }, [dispatch, user]);
 
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        full_name: user.full_name || '',
+        gender: user.gender || '',
+      });
+    }
+  }, [user]);
+
 
   const handleChange = (e) => {
     setFormData({

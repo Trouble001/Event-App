@@ -18,5 +18,8 @@ export const fetchSlidesByGroupAPI = ({ groupId, slug }) => {
 export const createSlideGroupAPI = (data) =>
   axiosInstance.post("/slide-groups/", data);
 
+export const updateSlideGroupAPI = (id, data) =>
+  axiosInstance.put(`/slide-groups/${id}/`, data);
+
 export const createSlideAPI = (data) =>
   axiosInstance.post("/slides/", data);

@@ -11,29 +11,34 @@ class SlideGroupViewSet(ModelViewSet):
     serializer_class = SlideGroupSerializer
 
     def get_permissions(self):
-        # Anyone can view groups
         if self.action in ["list", "retrieve"]:
             return [AllowAny()]
-
-        # Only admin can create/update/delete
         return [IsAdminUser()]
 
+    # ✅ LIST
     def list(self, request, *args, **kwargs):
         try:
             groups = self.get_queryset()
+
             if not groups.exists():
-                return error_response(message="No slide groups found")
+                return success_response(
+                    data=[],
+                    message="No slide groups found"
+                )
 
             serializer = self.get_serializer(groups, many=True)
+
             return success_response(
                 data=serializer.data,
                 message="Slide groups fetched successfully"
             )
+
         except Exception as e:
             return error_response(
                 message=f"Something went wrong: {str(e)}"
             )
 
+    # ✅ CREATE
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
 
@@ -49,6 +54,50 @@ class SlideGroupViewSet(ModelViewSet):
             data=serializer.data,
             message="Slide group created successfully",
         )
+
+    # ✅ UPDATE (FULL)
+    def update(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+
+            serializer = self.get_serializer(
+                instance,
+                data=request.data,
+                partial=True  # 🔥 IMPORTANT
+            )
+
+            if not serializer.is_valid():
+                errors = serializer.errors
+                first_error = next(iter(errors.values()))[0]
+
+                return error_response(message=first_error)
+
+            self.perform_update(serializer)
+
+            return success_response(
+                data=serializer.data,
+                message="Slide group updated successfully"
+            )
+
+        except Exception as e:
+            return error_response(
+                message=f"Something went wrong: {str(e)}"
+            )
+
+    # ✅ DELETE (optional but good)
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            instance.delete()
+
+            return success_response(
+                message="Slide group deleted successfully"
+            )
+
+        except Exception as e:
+            return error_response(
+                message=f"Something went wrong: {str(e)}"
+            )
 
 
 class SlideViewSet(ModelViewSet):

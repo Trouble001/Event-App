@@ -1,24 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { createSlideGroup, fetchSlideGroups } from "../features/slide/slideSlice";
+import { createSlideGroup, fetchSlideGroups, updateSlideGroup } from "../features/slide/slideSlice";
 import LoadingButton from "../components/LoadingButton";
 import ImageInput from "../components/ImageInput";
 // import { useNavigate } from "react-router-dom";
 
 
-const SlideGroupModal = ({ isOpen, onClose }) => {
+const SlideGroupModal = ({ isOpen, onClose, isEdit = false, initialData = null  }) => {
   const [formData, setFormData] = useState({
     name: "", slug: "", description: "", image: null,
   });
-
   const dispatch = useDispatch();
   const createStatus = useSelector((state) => state.slide.status.create);
+  const updateStatus = useSelector((state) => state.slide.status.update);
 
-  // const navigate = useNavigate();
+  useEffect(() => {
+    if (isEdit && initialData) {
+      setFormData({
+        name: initialData.name || "",
+        slug: initialData.slug || "",
+        description: initialData.description || "",
+        image: null, // file can't be pre-filled
+      });
+    }
+  }, [isEdit, initialData]);
 
   if (!isOpen) return null;
+
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      slug: "",
+      description: "",
+      image: null,
+    });
+  };
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -45,9 +63,13 @@ const SlideGroupModal = ({ isOpen, onClose }) => {
     }
 
     try {
-      await dispatch(createSlideGroup(data)).unwrap();
+      if (isEdit) {
+        await dispatch(updateSlideGroup({ id: initialData.id, data })).unwrap();
+      } else {
+        await dispatch(createSlideGroup(data)).unwrap();
+      }
       await dispatch(fetchSlideGroups()).unwrap();
-      setFormData({ name: "", slug: "", description: "", image: null });
+      resetForm();
       onClose();
     } catch (error) {
       console.log(error);
@@ -84,16 +106,20 @@ const SlideGroupModal = ({ isOpen, onClose }) => {
             onChange={handleChange}
             required
           />
-          <ImageInput name="image" onChange={handleChange} image={formData?.image} />
-          {/* <input
-            type="file"
+          <ImageInput
             name="image"
             onChange={handleChange}
-          /> */}
+            image={formData?.image}
+            isEdit={isEdit}
+            initialImage={initialData?.image_url}
+          />
+         
           <div className="flex flex-row items-center justify-between mb-0">
             <Button
               type="button"
-              onClick={onClose}
+              onClick={() => {
+                onClose(), resetForm()
+              }}
               className="bg-white/30 mb-0 mr-2"
             >
               Cancel
@@ -102,7 +128,13 @@ const SlideGroupModal = ({ isOpen, onClose }) => {
               className="mb-0" type="submit"
               disabled={createStatus === 'loading'}
               >
-              {createStatus === 'loading' ? (<LoadingButton />) : "Save"}
+              {createStatus  === "loading" ? (
+                <LoadingButton />
+              ) : isEdit ? (
+                "Update"
+              ) : (
+                "Save"
+              )}
             </Button>
           </div>
         </form>

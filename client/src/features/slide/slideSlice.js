@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchSlidesByGroupAPI, fetchSlideGroupsAPI, createSlideGroupAPI, createSlideAPI} from "./slideAPI";
+import { fetchSlidesByGroupAPI, fetchSlideGroupsAPI, createSlideGroupAPI, createSlideAPI, updateSlideGroupAPI} from "./slideAPI";
 
 
 // Fetch Slide Groups
@@ -59,6 +59,25 @@ export const createSlideGroup = createAsyncThunk(
 );
 
 // Create Slide Group
+export const updateSlideGroup = createAsyncThunk(
+  "slide/updateSlideGroup",
+  async ({ id, data }, { rejectWithValue }) => {
+    try {
+      const response = await updateSlideGroupAPI(id, data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message ||
+        error.response?.data?.errors?.detail ||
+        error.response?.data?.detail ||
+        "Something went wrong!"
+      );
+    }
+  }
+);
+
+
+// Create Slide
 export const createSlide = createAsyncThunk(
   "slide/createSlide",
   async (data, { rejectWithValue }) => {
@@ -87,6 +106,7 @@ const slideSlice = createSlice({
       slideLoading: "idle",
       slideGroupLoading: "idle",
       create: "idle",
+      update: "idle",
     },
     slideError: null,
     slideSuccess: null,
@@ -143,6 +163,24 @@ const slideSlice = createSlice({
       })
       .addCase(createSlideGroup.rejected, (state, action) => {
         state.status.create = "failed";
+        state.slideError = action.payload;
+      })
+
+      /* UPDATE SLIDE GROUP */
+      .addCase(updateSlideGroup.pending, (state) => {
+        state.status.update = "loading";
+      })
+      .addCase(updateSlideGroup.fulfilled, (state, action) => {
+        const updated = action.payload.data || action.payload;
+
+        state.groups = state.groups.map((g) =>
+          g.id === updated.id ? updated : g
+        );
+        state.status.update = "succeeded";
+        state.slideSuccess = action.payload.message;
+      })
+      .addCase(updateSlideGroup.rejected, (state, action) => {
+        state.status.update = "failed";
         state.slideError = action.payload;
       })
 

@@ -1,12 +1,40 @@
 @import "tailwindcss";
 
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+html {
+  background-image: url("./assets/bg2.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-origin: border-box;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
 @layer utilities {
   .glass {
     @apply bg-linear-to-tr from-transparent via-black/5 to-transparent backdrop-blur-md border border-white/20 rounded-3xl shadow-2xl ring-1 ring-white/10;
   }
 }
 
-.no-scrollbar::--webkit-scrollbar {
+.no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 

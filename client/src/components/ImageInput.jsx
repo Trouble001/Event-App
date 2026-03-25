@@ -1,45 +1,56 @@
-import React from 'react'
+import React, { useMemo } from "react";
 
-const ImageInput = ({ name, onChange, image }) => {
+const ImageInput = ({ name, onChange, image, initialImage }) => {
 
-  const getImagePreview = (image) => {
-    if (!image) return null;
-
+  const preview = useMemo(() => {
     if (image instanceof File) {
       return URL.createObjectURL(image);
     }
-    return image;
-  }
+    if (image) return image;
+
+    if (initialImage instanceof File) {
+      return URL.createObjectURL(initialImage);
+    }
+    if (initialImage) return initialImage;
+
+    return null;
+  }, [image, initialImage]);
+
+  const inputId = `fileInput-${name}`;
 
   return (
     <div>
-      <label className='block text-white mb-2 text-sm'>Add Image</label>
-      <div className='w-full h-36 relative flex flex-col items-center justify-center border-2 border-dashed glass cursor-pointer hover:border-cyan-400 transition mb-4'
-            onClick={() => document.getElementById("fileInput").click()}
+      <label className="block text-white mb-2 text-sm">
+        Add Image
+      </label>
+
+      <div
+        className="w-full h-36 relative flex flex-col items-center justify-center border-2 border-dashed glass cursor-pointer hover:border-cyan-400 transition mb-4"
+        onClick={() => document.getElementById(inputId).click()}
       >
         <input
-          id='fileInput'
-          type='file'
+          id={inputId}
+          type="file"
           name={name}
-          accept='image/*'
+          accept="image/*"
           onChange={onChange}
-          className='hidden'
+          className="hidden"
         />
 
-        {getImagePreview(image) ? (
+        {preview ? (
           <img
-            src={getImagePreview(image)}
-            alt='preview'
-            className='w-full h-full object-cover rounded-3xl'
+            src={preview}
+            alt="preview"
+            className="w-full h-full object-cover rounded-3xl"
           />
         ) : (
-          <>
-          <p className='text-white/70 text-sm'>Click to add image here</p>
-          </>
+          <p className="text-white/70 text-sm">
+            Click to add image here
+          </p>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default ImageInput;

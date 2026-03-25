@@ -10,6 +10,13 @@ class SlideGroupSerializer(serializers.ModelSerializer):
         model = SlideGroup
         fields = "__all__"
 
+    def validate_slug(self, value):
+        if self.instance and self.instance.slug == value:
+            return value
+        if SlideGroup.objects.filter(slug=value).exists():
+            raise serializers.ValidationError("Slug already exists")
+        return value
+
     def get_image_url(self, obj):
         request = self.context.get("request")
         if obj.image:

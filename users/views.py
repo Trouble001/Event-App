@@ -75,8 +75,11 @@ class MeView(APIView):
             partial=True
         )
         if serializer.is_valid():
-            serializer.save()
-            return success_response(message="User updated successfully")
+            user = serializer.save()
+            return success_response(
+                data=UserMeSerializer(user).data,
+                message="User updated successfully"
+            )
         
 
         # Extract first error message as string
