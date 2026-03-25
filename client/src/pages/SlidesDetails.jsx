@@ -27,6 +27,8 @@ const SlidesDetail = () => {
   }, [groups, slug]);
 
   const groupId = selectedGroup?.id;
+  const groupName = selectedGroup?.name;
+
 
   useEffect(() => {
   if (groupId) {
@@ -74,6 +76,7 @@ const SlidesDetail = () => {
             isOpen={openModal}
             onClose={() => setOpenModal(false)}
             groupId={groupId}
+            groupName={groupName}
         />
     </AppLayout>
   );

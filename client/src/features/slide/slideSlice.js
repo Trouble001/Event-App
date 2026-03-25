@@ -47,6 +47,7 @@ export const createSlideGroup = createAsyncThunk(
       const response = await createSlideGroupAPI(data);
       return response.data;
     } catch (error) {
+      console.log("API Error:", error);
       return rejectWithValue(
         error.response?.data?.message ||
         error.response?.data?.errors?.detail ||

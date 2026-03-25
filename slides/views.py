@@ -34,6 +34,22 @@ class SlideGroupViewSet(ModelViewSet):
                 message=f"Something went wrong: {str(e)}"
             )
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        if not serializer.is_valid():
+            errors = serializer.errors
+            first_error = next(iter(errors.values()))[0]
+
+            return error_response(message=first_error)
+
+        self.perform_create(serializer)
+
+        return success_response(
+            data=serializer.data,
+            message="Slide group created successfully",
+        )
+
 
 class SlideViewSet(ModelViewSet):
     queryset = Slide.objects.all()

@@ -3,11 +3,15 @@ import { useSelector, useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { clearError, clearSuccess } from "../features/auth/authSlice";
 import { clearAdminError, clearAdminSuccess } from "../features/admin/adminSlice";
+import { clearSlideError, clearSlideSuccess } from "../features/slide/slideSlice";
+
 
 
 const ToastListener = () => {
   const { error, successMessage } = useSelector((state) => state.auth);
-  const { adminError, adminSuccess } = useSelector((state) => state.admin)
+  const { adminError, adminSuccess } = useSelector((state) => state.admin);
+  const { slideError, slideSuccess } = useSelector((state) => state.slide);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -18,7 +22,12 @@ const ToastListener = () => {
 
     if (adminError) {
       toast.error(adminError);
-      dispatch(clearAdminError);
+      dispatch(clearAdminError());
+    }
+
+    if (slideError) {
+      toast.error(slideError);
+      dispatch(clearSlideError());
     }
 
     if (successMessage) {
@@ -30,7 +39,12 @@ const ToastListener = () => {
       toast.success(adminSuccess);
       dispatch(clearAdminSuccess());
     }
-  }, [error, adminError, successMessage, adminSuccess, dispatch]);
+
+    if (slideSuccess) {
+      toast.success(slideSuccess);
+      dispatch(clearSlideSuccess());
+    }
+  }, [error, adminError, slideError, successMessage, adminSuccess, slideSuccess, dispatch]);
 
   return null;
 };

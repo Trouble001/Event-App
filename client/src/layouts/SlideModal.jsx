@@ -9,7 +9,7 @@ import { createSlide, fetchSlidesByGroup } from "../features/slide/slideSlice";
 // import { useNavigate } from "react-router-dom";
 
 
-const SlideModal = ({ isOpen, onClose, groupId }) => {
+const SlideModal = ({ isOpen, onClose, groupId, groupName }) => {
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
@@ -42,8 +42,7 @@ const SlideModal = ({ isOpen, onClose, groupId }) => {
   return (
     <div className="w-auto h-full absolute bg-black/40 md:pl-23 inset-0 bg-red/60 mx-auto top-0 flex items-center justify-center z-50">
       <div className="glass w-full max-w-md p-6">
-        <h2 className="text-xl font-bold mb-4 text-white">Add Slide Group</h2>
-        <h3>Add Slide (Group: {groupId})</h3>
+        <h2 className="text-xl font-bold mb-4 text-white">Add Slide to ({groupName})</h2>
         <form onSubmit={handleSubmit} className="">
           <Input
             type="text"

@@ -14,13 +14,22 @@ const Home = () => {
 
   return (
     <AppLayout>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2'>
+        <div className='w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
             {groups.map((group) => (
                 <Link
                 key={group.id}
                 to={`/slides/${group.slug}`}
-                className="w-full h-20 flex items-center justify-center text-xl font-medium text-white/80 hover:text-cyan-500 border border-white/30 shadow-xl rounded-3xl"
-                >{group.name}</Link>
+                className="w-full h-36 flex items-center justify-center text-white/80 hover:text-cyan-500 hover:shadow-2xl border border-white/30 shadow rounded-3xl transition"
+                // style={{ 
+                //   backgroundImage: `url(${group?.image})`,
+                //   backgroundRepeat: "no-repeat",
+                //   backgroundSize: "cover",
+                //   backgroundPosition: "center",
+                //   backgroundAttachment: "fixed",
+                // }}
+                >
+                <h4 className='glass px-6 py-2 bg-black/30 text-base'>{group.name}</h4>
+                </Link>
             ))}
         </div>
     </AppLayout>

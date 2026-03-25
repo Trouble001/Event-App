@@ -4,6 +4,7 @@ import Button from "../components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { createSlideGroup, fetchSlideGroups } from "../features/slide/slideSlice";
 import LoadingButton from "../components/LoadingButton";
+import ImageInput from "../components/ImageInput";
 // import { useNavigate } from "react-router-dom";
 
 
@@ -83,11 +84,12 @@ const SlideGroupModal = ({ isOpen, onClose }) => {
             onChange={handleChange}
             required
           />
-          <input
+          <ImageInput name="image" onChange={handleChange} image={formData?.image} />
+          {/* <input
             type="file"
             name="image"
             onChange={handleChange}
-          />
+          /> */}
           <div className="flex flex-row items-center justify-between mb-0">
             <Button
               type="button"
