@@ -2,38 +2,47 @@ import { useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { useDispatch } from "react-redux";
-// import { createSlideGroup } from "../features/slide/slideSlice";
 import LoadingButton from "../components/LoadingButton";
 import { createSlide, fetchSlidesByGroup } from "../features/slide/slideSlice";
-// import { createSlide } from "../features/slide/slideSlice";
-// import { useNavigate } from "react-router-dom";
 
 
-const SlideModal = ({ isOpen, onClose, groupId, groupName }) => {
+const SlideModal = ({ isOpen, onClose, groupId, groupName, isEdit = false, initialData = null }) => {
+  const [formData, setFormData] = useState({
+    title: "", subtitle: "", text: "",
+  });
   const dispatch = useDispatch();
-  const [title, setTitle] = useState("");
-  const [text, setText] = useState("");
 
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      subtitle: "",
+      text: "",
+    });
+  };
 
   if (!isOpen) return null;
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name] : value,
+    });
+  };
+
   const handleSubmit = async (e) => {
    e.preventDefault();
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("text", text);
-    formData.append("group", groupId);
-
-    for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
-    }
+    const data = new FormData();
+    data.append("title", formData.title);
+    data.append("subtitle", formData.subtitle);
+    data.append("text", formData.text);
+    data.append("group", groupId);
 
     try {
-        await dispatch(createSlide(formData)).unwrap();
-        await dispatch(fetchSlidesByGroup({ groupId })).unwrap();
-        setTitle(""),
-        setText("");
+        await dispatch(createSlide(data)).unwrap();
+        resetForm();
         onClose();
+        await dispatch(fetchSlidesByGroup({ groupId })).unwrap();
     } catch (error) {
         console.log("Error: ", error);
     }
@@ -48,16 +57,24 @@ const SlideModal = ({ isOpen, onClose, groupId, groupName }) => {
             type="text"
             name="title"
             placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={formData.title}
+            onChange={handleChange}
+            required
+          />
+          <Input
+            type="text"
+            name="subtitle"
+            placeholder="Sub Title"
+            value={formData.subtitle}
+            onChange={handleChange}
             required
           />
           <Input
             type="text"
             name="text"
             placeholder="Text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
+            value={formData.text}
+            onChange={handleChange}
             required
           />
         

@@ -21,5 +21,8 @@ export const createSlideGroupAPI = (data) =>
 export const updateSlideGroupAPI = (id, data) =>
   axiosInstance.put(`/slide-groups/${id}/`, data);
 
+export const deleteSlideGroupAPI = (id) =>
+  axiosInstance.delete(`/slide-groups/${id}/`);
+
 export const createSlideAPI = (data) =>
   axiosInstance.post("/slides/", data);

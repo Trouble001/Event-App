@@ -16,19 +16,6 @@ const SlideGroupModal = ({ isOpen, onClose, isEdit = false, initialData = null  
   const createStatus = useSelector((state) => state.slide.status.create);
   const updateStatus = useSelector((state) => state.slide.status.update);
 
-  useEffect(() => {
-    if (isEdit && initialData) {
-      setFormData({
-        name: initialData.name || "",
-        slug: initialData.slug || "",
-        description: initialData.description || "",
-        image: null, // file can't be pre-filled
-      });
-    }
-  }, [isEdit, initialData]);
-
-  if (!isOpen) return null;
-
   const resetForm = () => {
     setFormData({
       name: "",
@@ -38,6 +25,22 @@ const SlideGroupModal = ({ isOpen, onClose, isEdit = false, initialData = null  
     });
   };
 
+  useEffect(() => {
+    if (isEdit && initialData) {
+      setFormData({
+        name: initialData.name || "",
+        slug: initialData.slug || "",
+        description: initialData.description || "",
+        image: null, // file can't be pre-filled
+      });
+    } else {
+      resetForm();
+    }
+  }, [isEdit, initialData]);
+
+
+  if (!isOpen) return null;
+  
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setFormData({
@@ -58,19 +61,15 @@ const SlideGroupModal = ({ isOpen, onClose, isEdit = false, initialData = null  
       data.append("image", formData.image);
     }
 
-    for (let pair of data.entries()) {
-      console.log(pair[0], pair[1]);
-    }
-
     try {
       if (isEdit) {
         await dispatch(updateSlideGroup({ id: initialData.id, data })).unwrap();
       } else {
         await dispatch(createSlideGroup(data)).unwrap();
       }
-      await dispatch(fetchSlideGroups()).unwrap();
       resetForm();
       onClose();
+      await dispatch(fetchSlideGroups()).unwrap();
     } catch (error) {
       console.log(error);
     }
@@ -80,7 +79,7 @@ const SlideGroupModal = ({ isOpen, onClose, isEdit = false, initialData = null  
   return (
     <div className="w-auto h-full absolute bg-black/40 md:pl-23 inset-0 bg-red/60 mx-auto top-0 flex items-center justify-center z-50">
       <div className="glass w-full max-w-md p-6">
-        <h2 className="text-xl font-bold mb-4 text-white">Add Slide Group</h2>
+        <h2 className="text-xl font-bold mb-4 text-white text-center">{isEdit ? "Edit Slide Group" : "Add Slide Group"}</h2>
         <form onSubmit={handleSubmit} className="">
           <Input
             type="text"
@@ -126,9 +125,9 @@ const SlideGroupModal = ({ isOpen, onClose, isEdit = false, initialData = null  
             </Button>
             <Button
               className="mb-0" type="submit"
-              disabled={createStatus === 'loading'}
+              disabled={createStatus === 'loading' || updateStatus === "loading"}
               >
-              {createStatus  === "loading" ? (
+              {createStatus  === "loading" || updateStatus === "loading" ? (
                 <LoadingButton />
               ) : isEdit ? (
                 "Update"

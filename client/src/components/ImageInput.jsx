@@ -1,27 +1,31 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 
-const ImageInput = ({ name, onChange, image, initialImage }) => {
+const ImageInput = ({ name, onChange, image, isEdit, initialImage }) => {
 
   const preview = useMemo(() => {
-    if (image instanceof File) {
-      return URL.createObjectURL(image);
-    }
+    if (image instanceof File) return URL.createObjectURL(image);
     if (image) return image;
 
-    if (initialImage instanceof File) {
-      return URL.createObjectURL(initialImage);
-    }
+    if (initialImage instanceof File) return URL.createObjectURL(initialImage);
     if (initialImage) return initialImage;
 
     return null;
   }, [image, initialImage]);
+
+  useEffect(() => {
+    return () => {
+      if (image instanceof File) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [image, preview]);
 
   const inputId = `fileInput-${name}`;
 
   return (
     <div>
       <label className="block text-white mb-2 text-sm">
-        Add Image
+        {isEdit ? "Edit Image" : "Add Image"}
       </label>
 
       <div

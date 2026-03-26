@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSlideGroups } from "../features/slide/slideSlice";
+import { deleteSlideGroup, fetchSlideGroups } from "../features/slide/slideSlice";
 import { Link, useNavigate } from "react-router-dom";
 import AppLayout from "../layouts/AppLayout";
 import IconButton from "../components/IconButton";
-import { PlusIcon, ArrowLeftIcon, PencilIcon } from '@heroicons/react/24/solid';
+import { PlusIcon, ArrowLeftIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
 import SlideGroupModal from "../layouts/SlideGroupModal";
 import LoadingButton from "../components/LoadingButton";
 
@@ -36,6 +36,16 @@ const SlideGroups = () => {
     setSelectedGroup(group);
     setOpenModal(true);
   };
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this group?");
+    if (!confirmDelete) return;
+    try {
+      await dispatch(deleteSlideGroup(id)).unwrap()
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  }
 
   return (
     <AppLayout>
@@ -74,13 +84,20 @@ const SlideGroups = () => {
                   {group.name}
                 </Link>
 
-                {/* EDIT BUTTON */}
-                <button
+                <div className="flex items-center justify-center">
+                  <button
                   onClick={() => handleEdit(group)}
-                  className="text-cyan-400 hover:text-cyan-300"
-                >
-                  <PencilIcon className="size-5" />
+                  className="text-cyan-400 hover:text-cyan-500 cursor-pointer px-1.5 border-r-2 border-white/30"
+                > Edit
+                  {/* <PencilIcon className="size-5" /> */}
                 </button>
+                <button
+                  onClick={() => handleDelete(group.id)}
+                  className="text-rose-400 hover:text-rose-500 cursor-pointer px-1.5"
+                > Delete
+                  {/* <TrashIcon className="size-5" /> */}
+                </button>
+                </div>
               </div>
             ))}
           </div>

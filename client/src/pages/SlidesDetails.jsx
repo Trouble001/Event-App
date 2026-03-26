@@ -29,19 +29,11 @@ const SlidesDetail = () => {
   const groupId = selectedGroup?.id;
   const groupName = selectedGroup?.name;
 
-
   useEffect(() => {
   if (groupId) {
     dispatch(fetchSlidesByGroup({ groupId })).unwrap();
   }
 }, [dispatch, groupId]);
-
-  // if (!slides || slides.length === 0) {
-  //   return <div>No Slides Found</div>;
-  // }
-
-  if (!selectedGroup) return <p>Loading...</p>;
-
 
   return (
     <AppLayout>
@@ -59,12 +51,23 @@ const SlidesDetail = () => {
             ) : (
               <div>
                 {slides.length === 0 ? (<div className="text-md text-center text-white mt-8">No Slides Found</div>) : (
-                  <div className="w-full grid grid-cols-4 gap-2 mt-4">
+                  <div className="w-full grid grid-cols-3 gap-2 mt-4">
                     {slides?.map((slide, index) => (
-                        <div key={index} className="w-full text-white/80 block border border-white/30 shadow-xl rounded-3xl px-4 py-2">
-                            <h1>{slide?.title}</h1>
-                            <h1>{slide?.text}</h1>
+                      <div key={index} className="w-full text-white/80 flex flex-col items-start justify-between border border-white/30 shadow-xl rounded-3xl px-4 py-2">
+                        <h1 className="text-white text-lg">{slide?.title}</h1>
+                        <h1 className="text-white/90">{slide?.subtitle}</h1>
+                        <h1 className="text-white/70 text-sm">{slide?.text}</h1>
+                        <div className="bottom-0 mt-2">
+                          <button
+                            className="text-cyan-400 hover:text-cyan-500 cursor-pointer pr-2 border-r-2 border-white/30"
+                          > Edit
+                          </button>
+                          <button
+                            className="text-rose-400 hover:text-rose-500 cursor-pointer px-2"
+                          > Delete
+                          </button>
                         </div>
+                      </div>
                     ))}
                   </div>
                 )}

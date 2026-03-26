@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchSlidesByGroupAPI, fetchSlideGroupsAPI, createSlideGroupAPI, createSlideAPI, updateSlideGroupAPI} from "./slideAPI";
+import { fetchSlidesByGroupAPI, fetchSlideGroupsAPI, createSlideGroupAPI, createSlideAPI, updateSlideGroupAPI, deleteSlideGroupAPI} from "./slideAPI";
 
 
 // Fetch Slide Groups
@@ -76,6 +76,24 @@ export const updateSlideGroup = createAsyncThunk(
   }
 );
 
+// Delete Slide Group
+export const deleteSlideGroup = createAsyncThunk(
+  "slide/deleteSlideGroup",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await deleteSlideGroupAPI(id);
+      return { id, ...response.data };
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message ||
+        error.response?.data?.errors?.detail ||
+        error.response?.data?.detail ||
+        "Something went wrong!"
+      );
+    }
+  }
+);
+
 
 // Create Slide
 export const createSlide = createAsyncThunk(
@@ -107,6 +125,7 @@ const slideSlice = createSlice({
       slideGroupLoading: "idle",
       create: "idle",
       update: "idle",
+      delete: "idle",
     },
     slideError: null,
     slideSuccess: null,
@@ -181,6 +200,20 @@ const slideSlice = createSlice({
       })
       .addCase(updateSlideGroup.rejected, (state, action) => {
         state.status.update = "failed";
+        state.slideError = action.payload;
+      })
+
+      /* DELETE SLIDE GROUP */
+      .addCase(deleteSlideGroup.pending, (state) => {
+        state.status.delete = "loading";
+      })
+      .addCase(deleteSlideGroup.fulfilled, (state, action) => {
+        state.groups = state.groups.filter((g) => g.id !== action.payload.id);
+        state.status.delete = "succeeded";
+        state.slideSuccess = action.payload.message;
+      })
+      .addCase(deleteSlideGroup.rejected, (state, action) => {
+        state.status.delete = "failed";
         state.slideError = action.payload;
       })
 

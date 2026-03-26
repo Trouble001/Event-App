@@ -5,6 +5,8 @@ from django.db.models import Max
 from .serializers import SlideGroupSerializer, SlideSerializer
 from common.responses import success_response, error_response
 
+# Group View Set
+
 
 class SlideGroupViewSet(ModelViewSet):
     queryset = SlideGroup.objects.all()
@@ -88,10 +90,11 @@ class SlideGroupViewSet(ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         try:
             instance = self.get_object()
+            group_name = instance.name
             instance.delete()
 
             return success_response(
-                message="Slide group deleted successfully"
+                message=f"Slide group '{group_name}' deleted successfully"
             )
 
         except Exception as e:
@@ -100,6 +103,7 @@ class SlideGroupViewSet(ModelViewSet):
             )
 
 
+# Slide View Set
 class SlideViewSet(ModelViewSet):
     queryset = Slide.objects.all()
     serializer_class = SlideSerializer
@@ -109,7 +113,7 @@ class SlideViewSet(ModelViewSet):
             return [AllowAny()]
         return [IsAdminUser()]
 
-    # ✅ Always return ordered slides
+    # FILTER + ORDER
     def get_queryset(self):
         queryset = Slide.objects.all().order_by("order")
 
@@ -124,21 +128,7 @@ class SlideViewSet(ModelViewSet):
 
         return queryset
 
-    # ✅ AUTO ASSIGN ORDER
-    def perform_create(self, serializer):
-        group = serializer.validated_data.get("group")
-
-        if not group:
-            raise Exception("Group is required")
-
-        last_order = Slide.objects.filter(group=group).aggregate(
-            max_order=Max("order")
-        )["max_order"]
-
-        new_order = (last_order or 0) + 1
-
-        serializer.save(order=new_order)
-
+    # LIST
     def list(self, request, *args, **kwargs):
         try:
             queryset = self.get_queryset()
@@ -158,6 +148,76 @@ class SlideViewSet(ModelViewSet):
             return success_response(
                 data=serializer.data,
                 message="Slides fetched successfully"
+            )
+
+        except Exception as e:
+            return error_response(
+                message=f"Something went wrong: {str(e)}"
+            )
+
+    # CREATE
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        if not serializer.is_valid():
+            errors = serializer.errors
+            first_error = next(iter(errors.values()))[0]
+
+            return error_response(message=first_error)
+
+        # AUTO ORDER
+        group = serializer.validated_data.get("group")
+
+        last_order = Slide.objects.filter(group=group).aggregate(
+            max_order=Max("order")
+        )["max_order"]
+
+        new_order = (last_order or 0) + 1
+
+        serializer.save(order=new_order)
+
+        return success_response(
+            data=serializer.data,
+            message="Slide created successfully"
+        )
+
+    # UPDATE
+    def update(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+
+            serializer = self.get_serializer(
+                instance,
+                data=request.data,
+                partial=True  # 🔥 IMPORTANT
+            )
+
+            if not serializer.is_valid():
+                errors = serializer.errors
+                first_error = next(iter(errors.values()))[0]
+
+                return error_response(message=first_error)
+
+            serializer.save()
+
+            return success_response(
+                data=serializer.data,
+                message="Slide updated successfully"
+            )
+
+        except Exception as e:
+            return error_response(
+                message=f"Something went wrong: {str(e)}"
+            )
+
+    # DELETE
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            instance.delete()
+
+            return success_response(
+                message="Slide deleted successfully"
             )
 
         except Exception as e:
