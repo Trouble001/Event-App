@@ -8,20 +8,22 @@ import Button from "../components/Button";
 import LoadingButton from "../components/LoadingButton";
 
 const UserDetail = () => {
-
   const { id } = useParams();
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { selectedUser } = useSelector((state) => state.admin);
-    const userStatus = useSelector((state) => state.admin.status.user);
-
+  const userStatus = useSelector((state) => state.admin.status.user);
 
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
     phone_number: "",
     gender: "",
+    is_active: false,
+    is_staff: false,
+    is_superuser: false,
   });
 
   useEffect(() => {
@@ -33,17 +35,21 @@ const UserDetail = () => {
       setFormData({
         full_name: selectedUser?.full_name || "",
         email: selectedUser?.email || "",
-        phone_number:  selectedUser?.phone_number || "",
+        phone_number: selectedUser?.phone_number || "",
         gender: selectedUser?.gender || "",
+        is_active: selectedUser?.is_active || false,
+        is_staff: selectedUser?.is_staff || false,
+        is_superuser: selectedUser?.is_superuser || false,
       });
     }
   }, [selectedUser]);
 
-
   const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
@@ -57,6 +63,8 @@ const UserDetail = () => {
     }
   };
 
+if (!user?.is_staff && !user?.is_superuser) return <AccessDenied />;
+
   return (
     <AppLayout>
       <div className="w-full h-screen flex items-center justify-center">
@@ -67,25 +75,19 @@ const UserDetail = () => {
           value={formData.full_name}
           onChange={handleChange}
           placeholder="Full Name"
-          
         />
-
         <Input
           name="email"
           value={formData.email}
           onChange={handleChange}
-          placeholder="Email"
-          
+          placeholder="Email"  
         />
-
         <Input
           name="phone_number"
           value={formData.phone_number}
           onChange={handleChange}
           placeholder="Phone"
-          
         />
-
         <select
           name="gender"
           value={formData.gender}
@@ -98,13 +100,45 @@ const UserDetail = () => {
           <option className="text-black" value="other">Other</option>
         </select>
 
+        <div className="flex flex-col gap-2 text-white mb-4 px-4">
+          <label className="flex items-center justify-between text-white">
+            <span>Is Active</span>
+            <input
+              type="checkbox"
+              name="is_active"
+              checked={formData.is_active}
+              onChange={handleChange}
+              className="accent-cyan-400"
+            />
+          </label>
+          <label className="flex items-center justify-between text-white">
+            <span>Is Staff</span>
+            <input
+              type="checkbox"
+              name="is_staff"
+              checked={formData.is_staff}
+              onChange={handleChange}
+              className="accent-cyan-400"
+            />
+          </label>
+          <label className="flex items-center justify-between text-white">
+            <span>Is Admin</span>
+            <input
+              type="checkbox"
+              name="is_superuser"
+              checked={formData.is_superuser}
+              onChange={handleChange}
+              className="accent-cyan-400"
+            />
+          </label>
+        </div>
+
         <Button
           type="submit"
           disabled={userStatus === "loading"}
           >{userStatus === "loading" ? (<LoadingButton />) : "Update"}
           </Button>
           <div className="w-full flex items-center justify-center text-white/80 hover:text-white text-md mt-0"><Link to="/dashboard/users">Cancel</Link></div>
-
       </form>
     </div>
     </AppLayout>

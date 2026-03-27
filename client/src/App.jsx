@@ -13,7 +13,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
 import ToastListener from "./components/ToastListener";
 import Tab from "./components/Tab";
-import Loader from "./layouts/Loader";
+import Spinner from "./layouts/Spinner";
 import EditProfile from "./pages/EditProfile";
 import Dasboard from "./pages/Dasboard";
 import UserDetail from "./pages/UserDetail";
@@ -38,7 +38,7 @@ function App() {
       <ToastListener />
       {/* {loading && <Loader />}
       {adminLoading && <Loader />} */}
-      {!authChecked && <Loader />}
+      {!authChecked && <Spinner />}
 
       <Routes>
         <Route path="/" element={<Home />} />

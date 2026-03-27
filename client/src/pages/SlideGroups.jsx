@@ -7,9 +7,11 @@ import IconButton from "../components/IconButton";
 import { PlusIcon, ArrowLeftIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
 import SlideGroupModal from "../layouts/SlideGroupModal";
 import LoadingButton from "../components/LoadingButton";
+import AccessDenied from "../components/AccessDenied";
 
 const SlideGroups = () => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
   const { groups } = useSelector((state) => state.slide);
   const slideGroupStatus = useSelector((state) => state.slide.status.slideGroupLoading);
 
@@ -22,6 +24,8 @@ const SlideGroups = () => {
   useEffect(() => {
     dispatch(fetchSlideGroups());
   }, [dispatch]);
+  
+  if (!user?.is_staff && !user?.is_superuser) return <AccessDenied />;
 
   /* ✅ OPEN CREATE */
   const handleCreate = () => {

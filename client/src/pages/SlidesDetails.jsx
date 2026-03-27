@@ -1,21 +1,25 @@
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSlideGroups, fetchSlidesByGroup } from "../features/slide/slideSlice";
+import { deleteSlide, fetchSlideGroups, fetchSlidesByGroup } from "../features/slide/slideSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import AppLayout from "../layouts/AppLayout";
 import IconButton from "../components/IconButton";
 import { PlusIcon, ArrowLeftIcon } from '@heroicons/react/24/solid';
 import SlideModal from "../layouts/SlideModal";
 import LoadingButton from "../components/LoadingButton";
+import AccessDenied from "../components/AccessDenied";
 
 const SlidesDetail = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
-  
+  const { user } = useSelector((state) => state.auth);
   const { slides, groups } = useSelector((state) => state.slide);
   const slideStatus = useSelector((state) => state.slide.status.slideLoading);
 
   const [openModal, setOpenModal] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [selectedSlide, setSelectedSlide] = useState(null);
+
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -35,13 +39,39 @@ const SlidesDetail = () => {
   }
 }, [dispatch, groupId]);
 
+   /* ✅ OPEN CREATE */
+  const handleCreate = () => {
+    setIsEdit(false);
+    setSelectedSlide(null);
+    setOpenModal(true);
+  };
+
+    /* ✅ OPEN EDIT */
+  const handleEdit = (slide) => {
+    setIsEdit(true);
+    setSelectedSlide(slide);
+    setOpenModal(true);
+  };
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this slide?");
+    if (!confirmDelete) return;
+    try {
+      await dispatch(deleteSlide(id)).unwrap()
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  }
+
+  if (!user?.is_staff && !user?.is_superuser) return <AccessDenied />;
+
   return (
     <AppLayout>
         <div className="glass w-full p-4">
             <div className="w-full flex items-center justify-between">
                 <IconButton onClick={() => navigate("/dashboard/slide-groups")}><ArrowLeftIcon className="size-6" /></IconButton>
                 <h1 className="text-2xl font-bold text-white">{selectedGroup ? `${selectedGroup.name}` : "Slides"}</h1>
-                <IconButton className="" onClick={() => setOpenModal(true)}>
+                <IconButton className="" onClick={handleCreate}>
                     <PlusIcon className="size-6" />
                     <h4 className="font-normal text-sm">Add Slide</h4>
                 </IconButton>
@@ -59,10 +89,12 @@ const SlidesDetail = () => {
                         <h1 className="text-white/70 text-sm">{slide?.text}</h1>
                         <div className="bottom-0 mt-2">
                           <button
+                            onClick={() => handleEdit(slide)}
                             className="text-cyan-400 hover:text-cyan-500 cursor-pointer pr-2 border-r-2 border-white/30"
                           > Edit
                           </button>
                           <button
+                            onClick={() => handleDelete(slide.id)}
                             className="text-rose-400 hover:text-rose-500 cursor-pointer px-2"
                           > Delete
                           </button>
@@ -80,6 +112,8 @@ const SlidesDetail = () => {
             onClose={() => setOpenModal(false)}
             groupId={groupId}
             groupName={groupName}
+            isEdit={isEdit}
+            initialData={selectedSlide}
         />
     </AppLayout>
   );

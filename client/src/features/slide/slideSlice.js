@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchSlidesByGroupAPI, fetchSlideGroupsAPI, createSlideGroupAPI, createSlideAPI, updateSlideGroupAPI, deleteSlideGroupAPI} from "./slideAPI";
+import { fetchSlidesByGroupAPI, fetchSlideGroupsAPI, createSlideGroupAPI, createSlideAPI, updateSlideGroupAPI, deleteSlideGroupAPI, updateSlideAPI, deleteSlideAPI} from "./slideAPI";
 
 
 // Fetch Slide Groups
@@ -58,7 +58,7 @@ export const createSlideGroup = createAsyncThunk(
   }
 );
 
-// Create Slide Group
+// Update Slide Group
 export const updateSlideGroup = createAsyncThunk(
   "slide/updateSlideGroup",
   async ({ id, data }, { rejectWithValue }) => {
@@ -102,6 +102,42 @@ export const createSlide = createAsyncThunk(
     try {
       const response = await createSlideAPI(data);
       return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message ||
+        error.response?.data?.errors?.detail ||
+        error.response?.data?.detail ||
+        "Something went wrong!"
+      );
+    }
+  }
+);
+
+// Update Slide
+export const updateSlide = createAsyncThunk(
+  "slide/updateSlide",
+  async ({ id, data }, { rejectWithValue }) => {
+    try {
+      const response = await updateSlideAPI(id, data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message ||
+        error.response?.data?.errors?.detail ||
+        error.response?.data?.detail ||
+        "Something went wrong!"
+      );
+    }
+  }
+);
+
+// Delete Slide
+export const deleteSlide = createAsyncThunk(
+  "slide/deleteSlide",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await deleteSlideAPI(id);
+      return { id, ...response.data };
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message ||
@@ -231,6 +267,38 @@ const slideSlice = createSlice({
       })
       .addCase(createSlide.rejected, (state, action) => {
         state.status.create = "failed";
+        state.slideError = action.payload;
+      })
+
+      /* UPDATE SLIDE */
+      .addCase(updateSlide.pending, (state) => {
+        state.status.update = "loading";
+      })
+      .addCase(updateSlide.fulfilled, (state, action) => {
+        const updated = action.payload.data || action.payload;
+
+        state.slides = state.slides.map((s) =>
+          s.id === updated.id ? updated : s
+        );
+        state.status.update = "succeeded";
+        state.slideSuccess = action.payload.message;
+      })
+      .addCase(updateSlide.rejected, (state, action) => {
+        state.status.update = "failed";
+        state.slideError = action.payload;
+      })
+
+         /* DELETE SLIDE GROUP */
+      .addCase(deleteSlide.pending, (state) => {
+        state.status.delete = "loading";
+      })
+      .addCase(deleteSlide.fulfilled, (state, action) => {
+        state.slides = state.slides.filter((s) => s.id !== action.payload.id);
+        state.status.delete = "succeeded";
+        state.slideSuccess = action.payload.message;
+      })
+      .addCase(deleteSlide.rejected, (state, action) => {
+        state.status.delete = "failed";
         state.slideError = action.payload;
       })
   },

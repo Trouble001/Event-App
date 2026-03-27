@@ -5,7 +5,7 @@ import { fetchUsers } from '../features/admin/adminSlice';
 import AppLayout from '../layouts/AppLayout';
 import AccessDenied from '../components/AccessDenied';
 import IconButton from '../components/IconButton';
-import { PlusIcon, ArrowLeftIcon } from '@heroicons/react/24/solid';
+import { PlusIcon, ArrowLeftIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import LoadingButton from '../components/LoadingButton';
 
 const Users = () => {
@@ -65,9 +65,10 @@ if (!user?.is_staff && !user?.is_superuser) return <AccessDenied />;
                   <td className='pl-2 py-2 border-r border-white/30 hidden lg:block'>{user.gender}</td>
                   <td className='pl-2 py-2 border-r border-white/30'>{user.phone_number}</td>
                   <td className='pl-2 py-2 border-r border-white/30 hidden lg:block'>{user.email}</td>
-                  <td className='pl-2 py-2 border-r border-white/30'>{user.is_active ? "Active": "Inactive"}</td>
-                  <td className='pl-2 py-2 border-r border-white/30'>{user.is_staff ? "Yes" : "No"}</td>
-                  <td className='pl-2 py-2 border-r border-white/30'>{user.is_superuser ? "Yes" : "No"}</td>
+
+                  <td className='pl-2 py-2 border-r border-white/30'>{user.is_active ? (<CheckIcon className="size-4 text-cyan-400" />) : (<XMarkIcon className="size-4 text-rose-400" />)}</td>
+                  <td className='pl-2 py-2 border-r border-white/30'>{user.is_staff ? (<CheckIcon className="size-4 text-cyan-400" />) : (<XMarkIcon className="size-4 text-rose-400" />)}</td>
+                  <td className='pl-2 py-2 border-r border-white/30'>{user.is_superuser ? (<CheckIcon className="size-4 text-cyan-400" />) : (<XMarkIcon className="size-4 text-rose-400" />)}</td>
                   <td className='pl-2 py-2'>
                     <button className='cursor-pointer' onClick={() => navigate(`/users/${user.id}`)}>Edit</button>
                   </td>

@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LoadingButton from "../components/LoadingButton";
-import { createSlide, fetchSlidesByGroup } from "../features/slide/slideSlice";
+import { createSlide, fetchSlidesByGroup, updateSlide } from "../features/slide/slideSlice";
 
 
 const SlideModal = ({ isOpen, onClose, groupId, groupName, isEdit = false, initialData = null }) => {
@@ -11,6 +11,8 @@ const SlideModal = ({ isOpen, onClose, groupId, groupName, isEdit = false, initi
     title: "", subtitle: "", text: "",
   });
   const dispatch = useDispatch();
+  const createStatus = useSelector((state) => state.slide.status.create);
+  const updateStatus = useSelector((state) => state.slide.status.update);
 
   const resetForm = () => {
     setFormData({
@@ -19,6 +21,18 @@ const SlideModal = ({ isOpen, onClose, groupId, groupName, isEdit = false, initi
       text: "",
     });
   };
+
+  useEffect(() => {
+      if (isEdit && initialData) {
+        setFormData({
+          title: initialData.title || "",
+          subtitle: initialData.subtitle || "",
+          text: initialData.text || "",
+        });
+      } else {
+        resetForm();
+      }
+    }, [isEdit, initialData]);
 
   if (!isOpen) return null;
 
@@ -39,7 +53,11 @@ const SlideModal = ({ isOpen, onClose, groupId, groupName, isEdit = false, initi
     data.append("group", groupId);
 
     try {
-        await dispatch(createSlide(data)).unwrap();
+        if (isEdit) {
+          await dispatch(updateSlide({ id: initialData.id, data })).unwrap();
+        } else {
+          await dispatch(createSlide(data)).unwrap();
+        }
         resetForm();
         onClose();
         await dispatch(fetchSlidesByGroup({ groupId })).unwrap();
@@ -88,7 +106,15 @@ const SlideModal = ({ isOpen, onClose, groupId, groupName, isEdit = false, initi
             </Button>
             <Button
               className="mb-0" type="submit"
-              > Save
+              disabled={createStatus === 'loading' || updateStatus === "loading"}
+              >
+              {createStatus  === "loading" || updateStatus === "loading" ? (
+                <LoadingButton />
+              ) : isEdit ? (
+                "Update"
+              ) : (
+                "Save"
+              )}
             </Button>
           </div>
         </form>

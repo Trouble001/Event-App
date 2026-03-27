@@ -30,7 +30,7 @@ body::-webkit-scrollbar {
 
 @layer utilities {
   .glass {
-    @apply bg-linear-to-tr from-transparent via-black/5 to-transparent backdrop-blur-md border border-white/20 rounded-3xl shadow-2xl ring-1 ring-white/10;
+    @apply bg-linear-to-tr from-transparent via-black/5 to-transparent backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl ring-1 ring-white/10;
   }
 }
 
@@ -42,3 +42,33 @@ body::-webkit-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+
+/* Spinner Animations */
+@keyframes spin1 {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes spin2 {
+  from { transform: rotate(22.5deg); }
+  to { transform: rotate(382.5deg); }
+}
+@keyframes spin3 {
+  from { transform: rotate(45deg); }
+  to { transform: rotate(405deg); }
+}
+@keyframes spin4 {
+  from { transform: rotate(67.5deg); }
+  to { transform: rotate(427.5deg); }
+}
+@keyframes fade {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* Utility classes */
+.animate-spin1 { animation: spin1 1s linear infinite; }
+.animate-spin2 { animation: spin2 1s linear infinite; }
+.animate-spin3 { animation: spin3 1s linear infinite; }
+.animate-spin4 { animation: spin4 1s linear infinite; }
+.animate-fade { animation: fade 1s linear infinite; }
