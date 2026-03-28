@@ -22,6 +22,9 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = []
 
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
+API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000/api")
+
 # --------------------------------------------------
 # Applications
 # --------------------------------------------------

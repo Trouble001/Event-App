@@ -7,7 +7,7 @@ body,
 }
 
 html {
-  background-image: url("./assets/bg2.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./assets/colorful.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -30,7 +30,7 @@ body::-webkit-scrollbar {
 
 @layer utilities {
   .glass {
-    @apply bg-linear-to-tr from-transparent via-black/5 to-transparent backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl ring-1 ring-white/10;
+    @apply bg-linear-to-tr from-transparent via-black/5 to-transparent backdrop-blur-lg backdrop-saturate-100 border border-white/20 rounded-3xl shadow-2xl ring-1 ring-white/10;
   }
 }
 

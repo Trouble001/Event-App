@@ -1,13 +1,23 @@
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../features/auth/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AppLayout from "../layouts/AppLayout";
 import Button from "../components/Button";
+import { EllipsisHorizontalIcon } from '@heroicons/react/24/solid';
+import ProfileModal from "../layouts/ProfileModal";
+
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
+  const [openModal, setOpenModal] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  }
 
   const handleLogin = () => {
     navigate("/login");
@@ -21,6 +31,11 @@ const Profile = () => {
     await dispatch(logoutUser());
     navigate("/profile");
   };
+
+  const handleChangePassword = () => {
+    setOpenModal(true);
+  };
+
 
   if (!user) {
     return (
@@ -38,7 +53,15 @@ const Profile = () => {
 
   return (
     <AppLayout>
-      <div className="w-full glass flex flex-col items-center justify-center py-4">
+      <div className="w-full max-w-lg mx-auto glass flex flex-col items-center justify-center pt-6 relative">
+        <button onClick={handleToggle} className="text-white right-4 top-4 absolute cursor-pointer bg-inherit rounded-full padding-2 mb-4">
+          <EllipsisHorizontalIcon className="size-7" />
+        </button>
+        {isOpen && (
+          <div className="glass w-40 p-2 h-auto text-white text-xs flex items-center justify-center absolute right-4 top-10 transition-all">
+            <button className="cursor-pointer" onClick={handleChangePassword}>Change Password</button>
+          </div>
+        )}
         <div className="w-16 h-16 md:w-20 md:h-20 text-4xl text-white rounded-full bg-gray-400 flex items-center justify-center">{user.full_name[0]}</div>
         <h2 className="text-xl md:text-3xl font-medium text-white">{user.full_name}</h2>
         <p className="text-sm md:text-md text-white/80">{user.email}</p>
@@ -52,6 +75,11 @@ const Profile = () => {
             >Logout</Button>
         </div>
       </div>
+
+      <ProfileModal
+        isOpen={openModal}
+        onClose={() => {setOpenModal(false), setIsOpen(false)}}
+      />
     </AppLayout>
   );
 };

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginAPI, registerAPI, logoutAPI, meAPI, forgotPasswordAPI, resetPasswordAPI, editProfileAPI } from "./authAPI";
+import { loginAPI, registerAPI, logoutAPI, meAPI, forgotPasswordAPI, resetPasswordAPI, editProfileAPI, changePasswordAPI } from "./authAPI";
 
 
 export const loginUser = createAsyncThunk(
@@ -68,6 +68,20 @@ export const editProfile = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || "Failed to update profile"
+      );
+    }
+  }
+)
+
+export const changePassword = createAsyncThunk(
+  "auth/changePassword",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await changePasswordAPI(data);
+      return response.data.message;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to change password"
       );
     }
   }
@@ -205,6 +219,21 @@ const authSlice = createSlice({
         state.successMessage = action.payload.message;
       })
       .addCase(editProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      /* CHANGE PASSWORD */
+      .addCase(changePassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.successMessage = null;
+      })
+      .addCase(changePassword.fulfilled, (state, action) => {
+        state.loading = false;
+        state.successMessage = action.payload;
+      })
+      .addCase(changePassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

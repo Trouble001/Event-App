@@ -1,12 +1,14 @@
 from rest_framework import serializers
 from .models import User
 from django.contrib.auth import authenticate
+from django.contrib.auth.password_validation import validate_password
 from phonenumber_field.serializerfields import PhoneNumberField
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
+from django.conf import settings
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -40,6 +42,8 @@ class RegisterSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs["password"] != attrs["confirm_password"]:
             raise serializers.ValidationError("Passwords do not match")
+
+        validate_password(attrs["password"])
         return attrs
 
     def create(self, validated_data):
@@ -106,7 +110,7 @@ class ForgotPasswordSerializer(serializers.Serializer):
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         token = default_token_generator.make_token(user)
 
-        reset_link = f"http://localhost:5173/reset-password/{uid}/{token}"
+        reset_link = f"{settings.FRONTEND_URL.rstrip('/')}/reset-password/{uid}/{token}"
 
         subject = "Reset Your Pasword"
         from_email = "noreply@yourapp.com"
@@ -139,6 +143,8 @@ class ResetPasswordSerializer(serializers.Serializer):
 
         if not default_token_generator.check_token(user, data["token"]):
             raise serializers.ValidationError("Invalid or expired token.")
+
+        validate_password(data["new_password"], user=user)
 
         data["user"] = user
         return data

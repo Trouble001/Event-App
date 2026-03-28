@@ -6,6 +6,7 @@ import AppLayout from "../layouts/AppLayout";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import LoadingButton from "../components/LoadingButton";
+import AccessDenied from "../components/AccessDenied";
 
 const UserDetail = () => {
   const { id } = useParams();

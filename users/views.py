@@ -3,12 +3,14 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import AccessToken
 from django.conf import settings
 from django.contrib.auth import get_user_model
-
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth.password_validation import validate_password
 from .serializers import RegisterSerializer, LoginSerializer, UserMeSerializer, ForgotPasswordSerializer, ResetPasswordSerializer, AdminUserSerializer
 from common.responses import success_response, error_response
 
 User = get_user_model()
 
+# User Register
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
@@ -26,6 +28,7 @@ class RegisterView(APIView):
         return error_response(message=first_error)
 
 
+# User Login
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
@@ -44,9 +47,9 @@ class LoginView(APIView):
             response.set_cookie(
                 key=settings.SIMPLE_JWT["AUTH_COOKIE"],
                 value=str(token),
-                httponly=True,
-                secure=False,  # True in production
-                samesite="Lax",
+                httponly=settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
+                secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
+                samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],
                 max_age=7 * 24 * 60 * 60
             )
 
@@ -58,6 +61,7 @@ class LoginView(APIView):
         return error_response(message=first_error)
 
 
+# User Profile
 class MeView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -88,7 +92,7 @@ class MeView(APIView):
 
         return error_response(message=first_error)
 
-
+# User Logout
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]  # Added
 
@@ -97,7 +101,7 @@ class LogoutView(APIView):
         response.delete_cookie(settings.SIMPLE_JWT["AUTH_COOKIE"])
         return response
     
-
+# User Password Forgot
 class ForgotPasswordView(APIView):
     def post(self, request):
         serializer = ForgotPasswordSerializer(data=request.data)
@@ -111,7 +115,7 @@ class ForgotPasswordView(APIView):
 
         return error_response(message=first_error)
     
-
+# User Password Reset
 class ResetPasswordView(APIView):
     def post(self, request):
         serializer = ResetPasswordSerializer(data=request.data)
@@ -126,7 +130,52 @@ class ResetPasswordView(APIView):
         return error_response(message=first_error)
     
 
+# User Password Change
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def put(self, request):
+        user = request.user
+
+        old_password = request.data.get("old_password")
+        new_password = request.data.get("new_password")
+
+        # Validate fields
+        if not old_password or not new_password:
+            return error_response(
+                message="Both old and new password are required"
+            )
+
+        # Check old password
+        if not check_password(old_password, user.password):
+            return error_response(
+                message="Old password is incorrect"
+            )
+
+        # Validate new password strength
+        try:
+            validate_password(new_password, user)
+        except Exception as e:
+            return error_response(
+                message=list(e)
+            )
+
+        # Prevent same password reuse
+        if check_password(new_password, user.password):
+            return error_response(
+                message="New password cannot be same as old password"
+            )
+
+        # ✅ Set new password
+        user.set_password(new_password)
+        user.save()
+
+        return success_response(
+            message="Password changed successfully"
+        )
+
+
+# Users for Admin
 class AdminUsersView(APIView):
     permission_classes = [IsAuthenticated]
 

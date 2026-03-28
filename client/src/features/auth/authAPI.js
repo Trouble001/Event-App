@@ -12,6 +12,9 @@ export const logoutAPI = () =>
 export const meAPI = () =>
   axiosInstance.get("/auth/me/");
 
+export const changePasswordAPI = (data) =>
+  axiosInstance.put("/auth/change-password/", data);
+
 export const editProfileAPI = (data) =>
   axiosInstance.patch("/auth/me/", data)
 
