@@ -57,16 +57,16 @@ const SlideGroups = () => {
         
         <div className="w-full flex items-center justify-between">
           <IconButton onClick={() => navigate("/dashboard")}>
-            <ArrowLeftIcon className="size-6" />
+            <ArrowLeftIcon className="size-4 md:size-5 lg:size-6" />
           </IconButton>
 
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-lg md:text-xl lg:text-2xl font-bold text-white">
             Slide Groups
           </h1>
 
           <IconButton onClick={handleCreate}>
-            <PlusIcon className="size-6" />
-            <h4 className="font-normal text-sm">Add Group</h4>
+            <PlusIcon className="size-4 md:size-5 lg:size-6" />
+            <h4 className="font-normal text-xs md:text-sm lg:text-md">Add Group</h4>
           </IconButton>
         </div>
 

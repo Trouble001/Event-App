@@ -41,7 +41,7 @@ const Profile = () => {
     return (
       <AppLayout>
         <div className="w-full h-full flex items-center justify-center">
-          <div className="w-10/12 md:w-8/12 lg:w-5/12 mx-auto glass p-6">
+          <div className="w-full max-w-lg mx-auto glass p-6">
             <h2 className="text-2xl text-white font-semibold mb-1">Hello There!</h2>
             <h4 className="text-lg text-white/60 mb-2">Please login to see your profile</h4>
             <Button onClick={handleLogin} className="mb-0">Login</Button>

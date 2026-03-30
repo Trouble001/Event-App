@@ -51,7 +51,7 @@ const EditProfile = () => {
   return (
     <AppLayout>
       <div className="w-full h-screen flex items-center justify-center">
-        <form onSubmit={handleSubmit} className="w-6/12 glass p-6">
+        <form onSubmit={handleSubmit} className="w-full max-w-lg glass p-6">
         <h2 className="text-2xl text-white mb-4 text-center">Edit Profile</h2>
             <Input
                 type="text"

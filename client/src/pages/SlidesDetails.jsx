@@ -69,11 +69,11 @@ const SlidesDetail = () => {
     <AppLayout>
         <div className="glass w-full p-4">
             <div className="w-full flex items-center justify-between">
-                <IconButton onClick={() => navigate("/dashboard/slide-groups")}><ArrowLeftIcon className="size-6" /></IconButton>
-                <h1 className="text-2xl font-bold text-white">{selectedGroup ? `${selectedGroup.name}` : "Slides"}</h1>
+                <IconButton onClick={() => navigate("/dashboard/slide-groups")}><ArrowLeftIcon className="size-4 md:size-5 lg:size-6" /></IconButton>
+                <h1 className="text-lg md:text-xl lg:text-2xl font-bold text-white">{selectedGroup ? `${selectedGroup.name}` : "Slides"}</h1>
                 <IconButton className="" onClick={handleCreate}>
-                    <PlusIcon className="size-6" />
-                    <h4 className="font-normal text-sm">Add Slide</h4>
+                    <PlusIcon className="size-4 md:size-5 lg:size-6" />
+                    <h4 className="font-normal text-xs md:text-sm lg:text-md">Add Slide</h4>
                 </IconButton>
             </div>
             {slideStatus === "loading" ? (
@@ -81,7 +81,7 @@ const SlidesDetail = () => {
             ) : (
               <div>
                 {slides.length === 0 ? (<div className="text-md text-center text-white mt-8">No Slides Found</div>) : (
-                  <div className="w-full grid grid-cols-3 gap-2 mt-4">
+                  <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
                     {slides?.map((slide, index) => (
                       <div key={index} className="w-full text-white/80 flex flex-col items-start justify-between border border-white/30 shadow-xl rounded-3xl px-4 py-2">
                         <h1 className="text-white text-lg">{slide?.title}</h1>

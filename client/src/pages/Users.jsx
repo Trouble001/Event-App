@@ -32,11 +32,11 @@ if (!user?.is_staff && !user?.is_superuser) return <AccessDenied />;
     <AppLayout>
       <div className='glass w-full p-4'>
         <div className="w-full flex items-center justify-between">
-          <IconButton onClick={() => navigate("/dashboard")}><ArrowLeftIcon className="size-6" /></IconButton>
-          <h1 className="text-2xl font-bold text-white">All Users</h1>
+          <IconButton onClick={() => navigate("/dashboard")}><ArrowLeftIcon className="size-4 md:size-5 lg:size-6" /></IconButton>
+          <h1 className="text-lg md:text-xl lg:text-2xl font-bold text-white">All Users</h1>
           <IconButton className="">
-            <PlusIcon className="size-6" />
-            <h4 className="font-normal text-sm">Add User</h4>
+            <PlusIcon className="size-4 md:size-5 lg:size-6" />
+            <h4 className="font-normal text-xs md:text-sm lg:text-md">Add User</h4>
           </IconButton>
         </div>
         {usersStatus === "loading" ? (

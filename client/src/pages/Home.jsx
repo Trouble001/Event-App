@@ -19,7 +19,7 @@ const Home = () => {
                 <Link
                 key={group.id}
                 to={`/slides/${group.slug}`}
-                className="w-full h-36 flex items-center justify-center text-white/80 hover:text-cyan-500 hover:shadow-2xl border border-white/30 shadow rounded-3xl transition"
+                className="w-full h-36 glass flex items-center justify-center text-white/80 hover:text-cyan-500 hover:shadow-2xl border border-white/30 shadow rounded-3xl transition"
                 // style={{ 
                 //   backgroundImage: `url(${group?.image})`,
                 //   backgroundRepeat: "no-repeat",

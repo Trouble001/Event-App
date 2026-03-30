@@ -44,7 +44,7 @@ const Login = () => {
   return (
     <AuthLayout>
       <AuthContainer>
-      <h2 className="text-white text-2xl font-bold mb-4">Login</h2>
+      <h2 className="text-white text-2xl font-bold mb-4">Login to your account</h2>
       <form onSubmit={handleSubmit} className="w-full px-5 md:px-8 lg:px-8">
         <Input
           type="text"
