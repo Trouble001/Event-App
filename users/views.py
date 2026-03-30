@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.password_validation import validate_password
-from .serializers import RegisterSerializer, LoginSerializer, UserMeSerializer, ForgotPasswordSerializer, ResetPasswordSerializer, AdminUserSerializer
+from .serializers import RegisterSerializer, LoginSerializer, UserMeSerializer, ForgotPasswordSerializer, ResetPasswordSerializer, AdminUserSerializer, AdminCreateUserSerializer
 from common.responses import success_response, error_response
 
 User = get_user_model()
@@ -180,10 +180,8 @@ class AdminUsersView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, pk=None):
-
         if not request.user.is_staff:
             return error_response(message="Admin access required")
-        
         if pk:
             try:
                 user = User.objects.get(pk=pk)
@@ -205,11 +203,29 @@ class AdminUsersView(APIView):
             message="Users fetched successfully"
         )
     
-    def patch(self, request, pk):
 
+    def post(self, request):
         if not request.user.is_staff:
             return error_response(message="Admin access required")
+        serializer = AdminCreateUserSerializer(
+            data=request.data,
+            context={"request": request}
+        )
+        if serializer.is_valid():
+            user = serializer.save()
+            return success_response(
+                data=AdminUserSerializer(user).data,
+                message="User created successfully"
+            )
 
+        errors = serializer.errors
+        first_error = next(iter(errors.values()))[0]
+
+        return error_response(message=first_error)
+    
+    def patch(self, request, pk):
+        if not request.user.is_staff:
+            return error_response(message="Admin access required")
         try:
             user = User.objects.get(pk=pk)
         except User.DoesNotExist:

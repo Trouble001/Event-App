@@ -6,6 +6,9 @@ export const fetchUsersAPI = () =>
 export const fetchUserAPI = (id) =>
   axiosInstance.get(`/auth/users/${id}/`);
 
+export const createUserAPI = (data) =>
+  axiosInstance.post('/auth/users/', data);
+
 export const updateUserAPI = (id, data) =>
   axiosInstance.patch(`/auth/users/${id}/`, data);
 

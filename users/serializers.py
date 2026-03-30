@@ -154,6 +154,50 @@ class ResetPasswordSerializer(serializers.Serializer):
         user.set_password(self.validated_data["new_password"])
         user.save()
 
+class AdminCreateUserSerializer(serializers.ModelSerializer):
+    phone_number = PhoneNumberField()
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = [
+            "phone_number",
+            "email",
+            "full_name",
+            "gender",
+            "password",
+            "is_active",
+            "is_staff",
+            "is_superuser",
+        ]
+
+    def validate_phone_number(self, value):
+        if not value.is_valid():
+            raise serializers.ValidationError("Invalid phone number")
+
+        if User.objects.filter(phone_number=value).exists():
+            raise serializers.ValidationError(
+                "Phone number already registered"
+            )
+        return value
+
+    def validate_password(self, value):
+        validate_password(value)
+        return value
+
+    def create(self, validated_data):
+        request = self.context.get("request")
+
+        # Prevent non-superuser from creating superuser
+        if not request.user.is_superuser:
+            validated_data["is_superuser"] = False
+
+        password = validated_data.pop("password")
+        user = User(**validated_data)
+        user.set_password(password)
+        user.save()
+        return user
+
 
 class AdminUserSerializer(serializers.ModelSerializer):
 

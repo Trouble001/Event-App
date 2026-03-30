@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchUsersAPI, fetchUserAPI, updateUserAPI} from "./adminAPI";
+import { fetchUsersAPI, fetchUserAPI, updateUserAPI, createUserAPI, deleteUserAPI} from "./adminAPI";
 
 
 // Fetch All Users
@@ -42,6 +42,27 @@ export const fetchUser = createAsyncThunk(
   }
 );
 
+// Create User
+export const createUser = createAsyncThunk(
+  "admin/createUser",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await createUserAPI(data);
+      return response.data;
+    } catch (error) {
+      console.log("Full Error:", error);
+      console.log("Backend Data:", error.response?.data);
+
+      return rejectWithValue(
+        error.response?.data?.message ||
+        error.response?.data?.errors?.detail ||
+        error.response?.data?.detail ||
+        "Something went wrong!"
+      );
+    }
+  }
+);
+
 // Update User
 export const updateUser = createAsyncThunk(
   "admin/updateUser",
@@ -53,6 +74,24 @@ export const updateUser = createAsyncThunk(
       console.log("Full Error:", error);
       console.log("Backend Data:", error.response?.data);
 
+      return rejectWithValue(
+        error.response?.data?.message ||
+        error.response?.data?.errors?.detail ||
+        error.response?.data?.detail ||
+        "Something went wrong!"
+      );
+    }
+  }
+);
+
+// Delete User
+export const deleteUser = createAsyncThunk(
+  "admin/deleteUser",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await deleteUserAPI(id);
+      return { id, ...response.data };
+    } catch (error) {
       return rejectWithValue(
         error.response?.data?.message ||
         error.response?.data?.errors?.detail ||
@@ -75,7 +114,9 @@ const adminSlice = createSlice({
     status: {
       users: "idle",
       user: "idle",
+      create: "idle",
       update: "idle",
+      delete: "idle",
     },
     adminError: null,
     adminSuccess: null,
@@ -119,25 +160,58 @@ const adminSlice = createSlice({
         state.adminError = action.payload; 
       })
 
+
+      /* CREATE USER */
+      .addCase(createUser.pending, (state) => {
+        state.status.create = "loading";
+      })
+      .addCase(createUser.fulfilled, (state, action) => {
+        state.status.create = "succeeded";
+        state.adminSuccess = action.payload.message;
+        if (action.payload.data) {
+          state.users.unshift(action.payload.data);
+        }
+      })
+      .addCase(createUser.rejected, (state, action) => {
+        state.status.create = "failed";
+        state.adminError = action.payload; 
+      })
+
       /* UPDATE USER */
       .addCase(updateUser.pending, (state) => {
         state.status.update = "loading";
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.selectedUser = action.payload.data;
-        // const index = state.users.findIndex(
-        //   (u) => u.id === action.payload.id
-        // );
-        // if (index !== -1) {
-        //   state.users[index] = action.payload;
-        // }
         state.status.update = "succeeded";
         state.adminSuccess = action.payload.message;
-        console.log("Success:", action.payload.message);
+        const index = state.users.findIndex(
+          (u) => u.id === action.payload.data.id
+        );
+        if (index !== -1) {
+          state.users[index] = action.payload.data;
+        }
       })
       .addCase(updateUser.rejected, (state, action) => {
         state.status.update = "failed";
         state.adminError = action.payload; 
+      })
+
+      /* DELETE USER */
+      .addCase(deleteUser.pending, (state) => {
+        state.status.delete = "loading";
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.selectedUser = null;
+        state.status.delete = "succeeded";
+        state.adminSuccess = action.payload.message;
+        state.users = state.users.filter(
+          (user) => user.id !== action.payload.id
+        );
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.status.delete = "failed";
+        state.adminError = action.payload;
       })
 
   },

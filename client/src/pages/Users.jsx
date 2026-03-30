@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchUsers } from '../features/admin/adminSlice';
@@ -7,26 +7,32 @@ import AccessDenied from '../components/AccessDenied';
 import IconButton from '../components/IconButton';
 import { PlusIcon, ArrowLeftIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import LoadingButton from '../components/LoadingButton';
+import CreateUserModal from '../layouts/CreateUserModal';
 
 const Users = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const { users, loading } = useSelector((state) => state.admin);
   const usersStatus = useSelector((state) => state.admin.status.users);
 
-useEffect(() => {
-  dispatch(fetchUsers()).unwrap();
-}, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchUsers()).unwrap();
+  }, [dispatch]);
 
-useEffect(() => {
-  console.log(user);
-}, [user]);
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
-if (loading) return <p>Loading...</p>;
+  if (loading) return <p>Loading...</p>;
 
+  const handleOpenUserModal = () => {
+    setOpenModal(true);
+  };
 
-if (!user?.is_staff && !user?.is_superuser) return <AccessDenied />;
+  if (!user?.is_staff && !user?.is_superuser) return <AccessDenied />;
 
   return (
     <AppLayout>
@@ -34,7 +40,7 @@ if (!user?.is_staff && !user?.is_superuser) return <AccessDenied />;
         <div className="w-full flex items-center justify-between">
           <IconButton onClick={() => navigate("/dashboard")}><ArrowLeftIcon className="size-4 md:size-5 lg:size-6" /></IconButton>
           <h1 className="text-lg md:text-xl lg:text-2xl font-bold text-white">All Users</h1>
-          <IconButton className="">
+          <IconButton className="" onClick={handleOpenUserModal}>
             <PlusIcon className="size-4 md:size-5 lg:size-6" />
             <h4 className="font-normal text-xs md:text-sm lg:text-md">Add User</h4>
           </IconButton>
@@ -78,6 +84,11 @@ if (!user?.is_staff && !user?.is_superuser) return <AccessDenied />;
         </table>
         )}  
       </div>
+
+      <CreateUserModal
+        isOpen={openModal}
+        onClose={() => {setOpenModal(false), setIsOpen(false)}}
+      />
     </AppLayout>
   )
 }
