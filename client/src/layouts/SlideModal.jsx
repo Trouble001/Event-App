@@ -68,7 +68,7 @@ const SlideModal = ({ isOpen, onClose, groupId, groupName, isEdit = false, initi
 
   return (
     <div className="w-auto h-full absolute bg-black/40 md:pl-23 inset-0 bg-red/60 mx-auto top-0 flex items-center justify-center z-50">
-      <div className="glass w-full max-w-md p-6">
+      <div className="glass w-full max-w-sm p-6">
         <h2 className="text-xl font-bold mb-4 text-white">Add Slide to ({groupName})</h2>
         <form onSubmit={handleSubmit} className="">
           <Input

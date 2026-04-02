@@ -44,7 +44,7 @@ const SlideShow = ({ slides }) => {
     setPaused(!paused);
   };
   return (
-    <div className="relative w-full h-screen overflow-hidden transition-all duration-700"
+    <div className="w-full h-screen fixed overflow-hidden transition-all duration-700"
       onClick={togglePause}
       >
 
@@ -57,7 +57,7 @@ const SlideShow = ({ slides }) => {
       ))}
 
       {/* Progress bar */}
-      <div className="absolute bottom-11 md:bottom-0 left-0 w-full h-2 bg-black/40 backdrop-blur-md">
+      <div className="fixed bottom-0 md:bottom-0 left-0 w-full h-2 bg-black/40 backdrop-blur-md">
         <div
           className="h-full bg-white/60 backdrop-blur-md rounded-2xl"
           style={{ width: `${progress}%` }}
@@ -65,7 +65,7 @@ const SlideShow = ({ slides }) => {
       </div>
 
       {/* Pause / Resume */}
-      <div className="absolute w-full bottom-14 flex items-center justify-center md:pl-20 z-10">
+      <div className="fixed w-full bottom-20 flex items-center justify-center md:pl-20 z-10">
         <IconButton
           onClick={togglePause}
         >

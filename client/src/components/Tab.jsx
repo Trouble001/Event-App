@@ -26,8 +26,8 @@ const Tab = () => {
 });
 
   return (
-    <LiquidGlass className="w-full md:w-20 md:h-screen fixed bottom-0 md:left-0 border-t border-b-0 border-r-0 border-l-0 md:border-r md:border-l-0 md:border-t-0 md:border-b-0 rounded-none">
-      <div className="md:h-full flex md:items-center justify-around md:flex-col py-2">
+    <div className="w-full bg-transparent md:w-20 md:h-screen fixed bottom-0 md:left-0 py-4 md:py-0 z-20">
+      <LiquidGlass className="w-full max-w-xs mx-auto md:h-full flex md:items-center justify-around md:flex-col md:border-r md:border-l-0 md:border-t-0 md:border-b-0 rounded-full md:rounded-none py-3 md:py-0">
         {filteredTabs.map((tab) => {
           const Icon = tab.icon;
 
@@ -46,8 +46,8 @@ const Tab = () => {
             </NavLink>
           );
         })}
-      </div>
-    </LiquidGlass>
+      </LiquidGlass>
+    </div>
   );
 }
 

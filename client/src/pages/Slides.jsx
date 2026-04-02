@@ -21,16 +21,16 @@ const Slides = () => {
     }, [groups, slug]);
 
   return (
-    <div>
+    <div className="w-full h-screen fixed">
       {slideStatus === "loading" ? (
-      <div className="w-full h-screen flex items-center justify-center md:pl-23"><LoadingButton /></div>
+      <div className="w-full h-screen fixed flex items-center justify-center md:pl-23"><LoadingButton /></div>
     ) : (
       <div>
       {slides?.length === 0 ? (
         <div className="text-md text-center text-white pt-20">No Slides Found</div>
       ) : (
         <div
-          className="w-full h-full"
+          className="w-full h-screen fixed z-10"
           style={{ 
             backgroundImage: `url(${selectedGroup?.image})`,
             backgroundRepeat: "no-repeat",

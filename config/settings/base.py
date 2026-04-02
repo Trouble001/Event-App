@@ -20,7 +20,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.8', 'localhost', '127.0.0.1']
 
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
 API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000/api")
@@ -159,9 +159,10 @@ SIMPLE_JWT = {
 # --------------------------------------------------
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:5173",
+# ]
+CORS_ALLOW_ALL_ORIGINS = True
 
 # --------------------------------------------------
 # Static Files

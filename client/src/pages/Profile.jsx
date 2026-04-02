@@ -65,12 +65,12 @@ const Profile = () => {
         <div className="w-16 h-16 md:w-20 md:h-20 text-4xl text-white rounded-full bg-gray-400 flex items-center justify-center">{user.full_name[0]}</div>
         <h2 className="text-xl md:text-3xl font-medium text-white">{user.full_name}</h2>
         <p className="text-sm md:text-md text-white/80">{user.email}</p>
-        <div className="w-full max-w-sm flex flex-row items-center justify-center mt-4">
+        <div className="w-full max-w-xs flex flex-row items-center justify-center mt-4">
           <Button
-            className="py-1 px-0 bg-white/20 mr-2 text-sm"
+            className="py-2 px-0 bg-cyan-500 mr-2 text-sm"
             onClick={handleEdit}>Edit</Button>
           <Button
-            className="py-1 px-0 text-sm"
+            className="py-2 px-0 text-sm bg-rose-500"
             onClick={handleLogout}
             >Logout</Button>
         </div>
