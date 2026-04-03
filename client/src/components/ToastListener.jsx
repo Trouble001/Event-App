@@ -30,20 +30,20 @@ const ToastListener = () => {
       dispatch(clearSlideError());
     }
 
-    if (successMessage) {
-      toast.success(successMessage);
-      dispatch(clearSuccess());
-    }
+    // if (successMessage) {
+    //   toast.success(successMessage);
+    //   dispatch(clearSuccess());
+    // }
 
-    if (adminSuccess) {
-      toast.success(adminSuccess);
-      dispatch(clearAdminSuccess());
-    }
+    // if (adminSuccess) {
+    //   toast.success(adminSuccess);
+    //   dispatch(clearAdminSuccess());
+    // }
 
-    if (slideSuccess) {
-      toast.success(slideSuccess);
-      dispatch(clearSlideSuccess());
-    }
+    // if (slideSuccess) {
+    //   toast.success(slideSuccess);
+    //   dispatch(clearSlideSuccess());
+    // }
   }, [error, adminError, slideError, successMessage, adminSuccess, slideSuccess, dispatch]);
 
   return null;

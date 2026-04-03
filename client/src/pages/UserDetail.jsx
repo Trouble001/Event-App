@@ -23,6 +23,7 @@ const UserDetail = () => {
 
   const userStatus = status.user;
   const updateStatus = status.update;
+  const deleteStatus = status.delete;
 
   const [formData, setFormData] = useState({
     full_name: "",
@@ -211,10 +212,15 @@ const UserDetail = () => {
 
           <Button
             type="button"
+            disabled={updateStatus === "loading"}
             className="bg-rose-500 mt-2"
             onClick={() => handleDelete(selectedUser.id)}
           >
-            Delete User
+            {deleteStatus === "loading" ? (
+              <LoadingButton />
+            ) : (
+              "Delete User"
+            )}
           </Button>
 
           <div className="text-center mt-3 text-white/80 hover:text-white">
