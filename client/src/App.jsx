@@ -9,14 +9,12 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
-import ProtectedRoute from "./routes/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
 import ToastListener from "./components/ToastListener";
 import Tab from "./components/Tab";
 import Spinner from "./layouts/Spinner";
 import EditProfile from "./pages/EditProfile";
 import Dasboard from "./pages/Dasboard";
-import UserDetail from "./pages/UserDetail";
 import SlideGroups from "./pages/SlideGroups";
 import Slides from "./pages/Slides";
 import Users from "./pages/Users";
@@ -51,7 +49,6 @@ function App() {
         <Route path="/dashboard" element={<Dasboard />} />
         <Route path="/dashboard/users" element={<Users />} />
         <Route path="/dashboard/slide-groups/slides/:slug" element={<SlidesDetail />} />
-        <Route path="/users/:id" element={<UserDetail />} />
         <Route path="dashboard/slide-groups" element={<SlideGroups />} />
         <Route path="/slides/:slug" element={<Slides />} />
         <Route path="/setting" element={<Setting />} />

@@ -70,7 +70,7 @@ const Profile = () => {
             className="py-2 px-0 bg-cyan-500 mr-2 text-sm"
             onClick={handleEdit}>Edit</Button>
           <Button
-            className="py-2 px-0 text-sm bg-rose-500"
+            className="py-2 px-0 text-sm bg-rose-600 hover:bg-rose-500"
             onClick={handleLogout}
             >Logout</Button>
         </div>
