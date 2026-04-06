@@ -3,6 +3,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import AccessToken
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.db.models import Q
+from math import ceil
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.password_validation import validate_password
 from .serializers import RegisterSerializer, LoginSerializer, UserMeSerializer, ForgotPasswordSerializer, ResetPasswordSerializer, AdminUserSerializer, AdminCreateUserSerializer
@@ -195,11 +197,39 @@ class AdminUsersView(APIView):
                 message="User fetched successfully"
             )
 
+
+        # Query Params and Search logic
+        search = request.query_params.get("search", "")
+        page = int(request.query_params.get("page", 1))
+        page_size = int(request.query_params.get("page_size", 5))
+
         users = User.objects.all().order_by("-id")
+
+        if search:
+            users = users.filter(
+                Q(full_name__icontains=search) |
+                Q(email__icontains=search) |
+                Q(phone_number__icontains=search)
+            )
+
+        total = users.count()
+        total_pages = ceil(total / page_size)
+        
+        start = (page - 1) * page_size
+        end = start + page_size
+
+        users = users[start:end]
+
         serializer = AdminUserSerializer(users, many=True)
 
         return success_response(
-            data=serializer.data,
+            data={
+                "users": serializer.data,
+                "total": total,
+                "page": page,
+                "page_size": page_size,
+                "total_pages": total_pages,
+            },
             message="Users fetched successfully"
         )
     

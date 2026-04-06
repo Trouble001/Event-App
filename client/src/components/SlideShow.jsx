@@ -47,7 +47,6 @@ const SlideShow = ({ slides }) => {
     <div className="w-full h-screen fixed overflow-hidden transition-all duration-700"
       onClick={togglePause}
       >
-
       {slides.map((slide, index) => (
         <Slide
           key={slide.id}

@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingButton from "../components/LoadingButton";
 import { createSlide, fetchSlidesByGroup, updateSlide } from "../features/slide/slideSlice";
+import TextBox from "../components/TextBox";
 
 const SlideModal = ({ isOpen, onClose, groupId, groupName, isEdit = false, initialData = null }) => {
   const [formData, setFormData] = useState({
@@ -86,10 +87,10 @@ const SlideModal = ({ isOpen, onClose, groupId, groupName, isEdit = false, initi
           onChange={handleChange}
           required
         />
-        <Input
+        <TextBox
           type="text"
           name="text"
-          placeholder="Text"
+          placeholder="Write tips details here..."
           value={formData.text}
           onChange={handleChange}
           required

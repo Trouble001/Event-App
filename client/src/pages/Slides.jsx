@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSlidesByGroup } from "../features/slide/slideSlice";
+import { fetchSlideGroups, fetchSlidesByGroup } from "../features/slide/slideSlice";
 import { useParams } from "react-router-dom";
 import SlideShow from "../components/SlideShow";
 import LoadingButton from "../components/LoadingButton";
@@ -12,8 +12,8 @@ const Slides = () => {
   const { slides, groups } = useSelector((state) => state.slide);
   
   useEffect(() => {
-    console.log("Calling API with:", { slug });
     dispatch(fetchSlidesByGroup({ slug })).unwrap();
+    dispatch(fetchSlideGroups()).unwrap();
   }, [dispatch, slug]);
 
   const selectedGroup = useMemo(() => {
@@ -32,7 +32,7 @@ const Slides = () => {
         <div
           className="w-full h-screen fixed z-10"
           style={{ 
-            backgroundImage: `url(${selectedGroup?.image})`,
+            backgroundImage: selectedGroup?.image ? `url(${selectedGroup?.image})` : "none",
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
             backgroundPosition: "center",

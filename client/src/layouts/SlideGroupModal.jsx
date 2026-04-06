@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createSlideGroup, fetchSlideGroups, updateSlideGroup } from "../features/slide/slideSlice";
 import LoadingButton from "../components/LoadingButton";
 import ImageInput from "../components/ImageInput";
+import TextBox from "../components/TextBox";
 // import { useNavigate } from "react-router-dom";
 
 
@@ -97,10 +98,10 @@ const SlideGroupModal = ({ isOpen, onClose, isEdit = false, initialData = null  
             onChange={handleChange}
             required
           />
-          <Input
+          <TextBox
             type="text"
             name="description"
-            placeholder="Description"
+            placeholder="Write description about group..."
             value={formData.description}
             onChange={handleChange}
             required

@@ -5,15 +5,11 @@ import { fetchUsersAPI, fetchUserAPI, updateUserAPI, createUserAPI, deleteUserAP
 // Fetch All Users
 export const fetchUsers = createAsyncThunk(
   "admin/fetchUsers",
-  async (_, { rejectWithValue }) => {
+  async ({ page, search }, { rejectWithValue }) => {
     try {
-      const response = await fetchUsersAPI();
-      // console.log("USERS:", response);
+      const response = await fetchUsersAPI(page, search);
       return response.data;
     } catch (error) {
-      console.log("Full Error:", error);
-      console.log("Backend Data:", error.response?.data);
-
       return rejectWithValue(
         error.response?.data?.message ||
         error.response?.data?.errors?.detail ||
@@ -110,6 +106,11 @@ const adminSlice = createSlice({
   initialState: {
     users: [],
     selectedUser: null,
+    pagination: {
+      total: 0,
+      page: 1,
+      total_pages: 1,
+    },
     adminLoading: false,
     status: {
       users: "idle",
@@ -137,7 +138,12 @@ const adminSlice = createSlice({
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.status.users = "succeeded";
-        state.users = action.payload.data;
+        state.users = action.payload.data.users;
+        state.pagination = {
+          total: action.payload.data.total,
+          page: action.payload.data.page,
+          total_pages: action.payload.data.total_pages,
+        }
         state.adminSuccess = action.payload.message;
         
       })

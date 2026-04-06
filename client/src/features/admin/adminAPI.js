@@ -1,7 +1,7 @@
 import axiosInstance from "../../services/axios";
 
-export const fetchUsersAPI = () =>
-  axiosInstance.get("/auth/users/");
+export const fetchUsersAPI = (page = 1, search = "") =>
+  axiosInstance.get(`/auth/users/?page=${page}&search=${search}`);
 
 export const fetchUserAPI = (id) =>
   axiosInstance.get(`/auth/users/${id}/`);
