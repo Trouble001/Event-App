@@ -1,7 +1,7 @@
 const Spinner = ({
   text = "AUTHENTICATING",
   size = 80,
-  color = "#06b6d4",
+  color = "#2dd4bf",
   bg = "transparent",
 }) => {
   const dotSize = size / 12;
@@ -16,7 +16,7 @@ const Spinner = ({
       {/* Text */}
       <div className="absolute flex items-center justify-center w-full h-full">
         <h1
-          className="text-xs font-semibold px-2 py-[2px] border shadow animate-fade"
+          className="text-xs font-semibold px-2 py-0.5 border shadow animate-fade"
           style={{
             color,
             borderColor: color,

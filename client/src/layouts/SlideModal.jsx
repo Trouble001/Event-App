@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+import ModalContainer from "../components/ModalContainer";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingButton from "../components/LoadingButton";
 import { createSlide, fetchSlidesByGroup, updateSlide } from "../features/slide/slideSlice";
-
 
 const SlideModal = ({ isOpen, onClose, groupId, groupName, isEdit = false, initialData = null }) => {
   const [formData, setFormData] = useState({
@@ -67,59 +67,59 @@ const SlideModal = ({ isOpen, onClose, groupId, groupName, isEdit = false, initi
   }
 
   return (
-    <div className="w-auto h-full absolute bg-black/40 md:pl-23 inset-0 bg-red/60 mx-auto top-0 flex items-center justify-center z-50">
-      <div className="glass w-full max-w-sm p-6">
-        <h2 className="text-xl font-bold mb-4 text-white">Add Slide to ({groupName})</h2>
-        <form onSubmit={handleSubmit} className="">
-          <Input
-            type="text"
-            name="title"
-            placeholder="Title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-          />
-          <Input
-            type="text"
-            name="subtitle"
-            placeholder="Sub Title"
-            value={formData.subtitle}
-            onChange={handleChange}
-            required
-          />
-          <Input
-            type="text"
-            name="text"
-            placeholder="Text"
-            value={formData.text}
-            onChange={handleChange}
-            required
-          />
-        
-          <div className="flex flex-row items-center justify-between mb-0">
-            <Button
-              type="button"
-              onClick={onClose}
-              className="bg-white/30 mb-0 mr-2"
+    <ModalContainer>
+      <h2 className="text-xl font-bold mb-4 text-white text-center">{isEdit ? 'Update' : 'Create'} Slide to ({groupName})</h2>
+      <form onSubmit={handleSubmit} className="">
+        <Input
+          type="text"
+          name="title"
+          placeholder="Title"
+          value={formData.title}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          type="text"
+          name="subtitle"
+          placeholder="Sub Title"
+          value={formData.subtitle}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          type="text"
+          name="text"
+          placeholder="Text"
+          value={formData.text}
+          onChange={handleChange}
+          required
+        />
+      
+        <div className="flex flex-row items-center justify-between mb-0">
+          <Button
+            type="button"
+            onClick={onClose}
+            variant="secondary"
+            className="mb-0 mr-2"
+          >
+            Cancel
+          </Button>
+          <Button
+            className="mb-0" type="submit"
+            variant="primary"
+            disabled={createStatus === 'loading' || updateStatus === "loading"}
             >
-              Cancel
-            </Button>
-            <Button
-              className="mb-0" type="submit"
-              disabled={createStatus === 'loading' || updateStatus === "loading"}
-              >
-              {createStatus  === "loading" || updateStatus === "loading" ? (
-                <LoadingButton />
-              ) : isEdit ? (
-                "Update"
-              ) : (
-                "Save"
-              )}
-            </Button>
-          </div>
-        </form>
-      </div>
-    </div>
+            {createStatus  === "loading" || updateStatus === "loading" ? (
+              <LoadingButton />
+            ) : isEdit ? (
+              "Update"
+            ) : (
+              "Save"
+            )}
+          </Button>
+        </div>
+      </form>
+    </ModalContainer>
   );
 };
 

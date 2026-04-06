@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import ModalContainer from "../components/ModalContainer";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +14,7 @@ const UserModal = ({ isOpen, onClose, isEdit = false, initialData = null }) => {
   const createStatus = status.create;
   const updateStatus = status.update;
   const deleteStatus = status.delete;
+
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
@@ -115,9 +117,8 @@ const UserModal = ({ isOpen, onClose, isEdit = false, initialData = null }) => {
 
 
   return (
-    <div className="w-auto h-full absolute bg-black/40 md:pl-23 inset-0 mx-auto top-0 flex items-center justify-center z-40">
-      <div className="glass w-full max-w-md p-6">
-        <h2 className="text-xl font-bold mb-4 text-white">{isEdit ? 'Update' : 'Create'} User</h2>
+    <ModalContainer>
+      <h2 className="text-xl font-bold mb-4 text-white text-center">{isEdit ? 'Update' : 'Create'} User</h2>
         <form onSubmit={handleSubmit} className="">
           <Input
             type="text"
@@ -208,12 +209,14 @@ const UserModal = ({ isOpen, onClose, isEdit = false, initialData = null }) => {
             <Button
               type="button"
               onClick={onClose}
-              className="bg-white/30 mb-0 mr-2"
+              variant="secondary"
+              className="mb-0 mr-2"
             >
               Cancel
             </Button>
             <Button
             disabled={ createStatus === "loading" || updateStatus === "loading" }
+            variant="primary"
             className="mb-0" type="submit"
             >
               {createStatus === "loading" || updateStatus === "loading" ? (
@@ -224,8 +227,9 @@ const UserModal = ({ isOpen, onClose, isEdit = false, initialData = null }) => {
           {isEdit && initialData ? (
             <Button
             type="button"
-            disabled={updateStatus === "loading"}
-            className="bg-rose-600 hover:bg-rose-500 mt-2"
+            disabled={deleteStatus === "loading"}
+            variant="danger"
+            className="mt-2"
             onClick={() => handleDelete(initialData.id)}
           >
             {deleteStatus === "loading" ? (
@@ -236,8 +240,7 @@ const UserModal = ({ isOpen, onClose, isEdit = false, initialData = null }) => {
           </Button>
           ) : null}
         </form>
-      </div>
-    </div>
+    </ModalContainer>
   );
 };
 

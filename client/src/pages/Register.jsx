@@ -17,7 +17,7 @@ const Register = () => {
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.auth);
-    const registerStatus = useSelector((state) => state.auth.status.register);
+  const registerStatus = useSelector((state) => state.auth.status.register);
 
   const [formData, setFormData] = useState({
     full_name: "",

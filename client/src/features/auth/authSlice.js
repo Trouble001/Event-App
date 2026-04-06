@@ -144,6 +144,9 @@ const authSlice = createSlice({
       register: "idle",
       forgot: "idle",
       reset: "idle",
+      edit: "idle",
+      logout: "idle",
+      password: "idle",
     },
     authChecked: false,
     error: null,
@@ -209,40 +212,50 @@ const authSlice = createSlice({
 
       /* EDIT PROFILE */
       .addCase(editProfile.pending, (state) => {
-        state.loading = true;
+        state.status.edit = "loading";
         state.error = null;
         state.successMessage = null;
       })
       .addCase(editProfile.fulfilled, (state, action) => {
-        state.loading = false;
+        state.status.edit = "succeeded";
         state.user = action.payload.user;
         state.successMessage = action.payload.message;
       })
       .addCase(editProfile.rejected, (state, action) => {
-        state.loading = false;
+        state.status.edit = "failed";
         state.error = action.payload;
       })
 
       /* CHANGE PASSWORD */
       .addCase(changePassword.pending, (state) => {
-        state.loading = true;
+        state.status.password = "loading";
         state.error = null;
         state.successMessage = null;
       })
       .addCase(changePassword.fulfilled, (state, action) => {
-        state.loading = false;
+        state.status.password = "succeeded";
         state.successMessage = action.payload;
       })
       .addCase(changePassword.rejected, (state, action) => {
-        state.loading = false;
+        state.status.password = "failed";
         state.error = action.payload;
       })
 
       /* LOGOUT */
-      .addCase(logoutUser.fulfilled, (state) => {
+      .addCase(logoutUser.pending, (state) => {
+        state.status.logout = "loading";
+      })
+      .addCase(logoutUser.fulfilled, (state, action) => {
+        state.status.logout = "succeeded";
         state.user = null;
         state.authChecked = true;
+        state.successMessage = action.payload;
       })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.status.logout = "failed";
+        state.error = action.payload;
+      })
+
 
       /* FORGOT PASSWORD */
       .addCase(forgotPassword.pending, (state) => {

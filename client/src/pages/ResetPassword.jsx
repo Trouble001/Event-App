@@ -64,7 +64,7 @@ const ResetPassword = () => {
           onRightIconClick={() => setShowPassword(!showPassword)}
         />
         <Button type="submit" disabled={resetStatus === "loading"}>
-          {resetStatus === "loading" ? (<LoadingButton />) : "Reset Password"}
+          {resetStatus === "loading" ? <LoadingButton /> : "Reset Password"}
         </Button>
       </form>
     </AuthContainer>

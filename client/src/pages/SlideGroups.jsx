@@ -91,7 +91,7 @@ const SlideGroups = () => {
                 <div className="flex items-center justify-center">
                   <button
                   onClick={() => handleEdit(group)}
-                  className="text-cyan-400 hover:text-cyan-500 cursor-pointer px-1.5 border-r-2 border-white/30"
+                  className="text-teal-400 hover:text-teal-500 cursor-pointer px-1.5 border-r-2 border-white/30"
                 > Edit
                   {/* <PencilIcon className="size-5" /> */}
                 </button>

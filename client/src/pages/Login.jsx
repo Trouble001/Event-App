@@ -44,7 +44,8 @@ const Login = () => {
   return (
     <AuthLayout>
       <AuthContainer>
-      <h2 className="text-white text-2xl font-bold mb-4">Login to your account</h2>
+      <h2 className="text-white text-2xl font-bold mb-1">Welcome back!</h2>
+      <h2 className="text-white/70 text-md  mb-4">Login into your account to access more about this site.</h2>
       <form onSubmit={handleSubmit} className="w-full px-5 md:px-8 lg:px-8">
         <Input
           type="text"
@@ -84,6 +85,10 @@ const Login = () => {
         Don't have an account? <Link className="text-white font-semibold cursor-pointer hover:underline" to="/register">Register</Link>
         </p>
       </div>
+      {/* <div className="w-10/12 mx-auto text-center m-0 p-0 bottom-0 text-base text-white/80 lg:text-md flex items-center justify-center">
+        <p>By signing in you are agree to the terms & conditions and privacy policy</p>
+      </div> */}
+      
     </AuthContainer>
     </AuthLayout>
   );

@@ -1,13 +1,15 @@
 import { useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changePassword, logoutUser } from "../features/auth/authSlice";
 import toast from "react-hot-toast";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
+import ModalContainer from "../components/ModalContainer";
+import LoadingButton from "../components/LoadingButton";
 
 
-const ProfileModal = ({ isOpen, onClose }) => {
+const ChangePasswordModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     old_password: "",
     new_password: "",
@@ -16,6 +18,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
+  const passwordStatus = useSelector((state) => state.auth.status.password);
 
   const resetForm = () => {
     setFormData({
@@ -54,9 +57,8 @@ const ProfileModal = ({ isOpen, onClose }) => {
 
 
   return (
-    <div className="w-auto h-full absolute bg-black/40 md:pl-23 inset-0 bg-red/60 mx-auto top-0 flex items-center justify-center z-40">
-      <div className="glass w-full max-w-sm p-6">
-        <h2 className="text-xl font-bold mb-4 text-white">Change Password</h2>
+    <ModalContainer>
+      <h2 className="text-xl font-bold mb-4 text-white text-center">Change Password</h2>
         <form onSubmit={handleSubmit} className="">
           <Input
             type={showPassword ? "text" : "password"}
@@ -95,18 +97,23 @@ const ProfileModal = ({ isOpen, onClose }) => {
             <Button
               type="button"
               onClick={onClose}
-              className="bg-white/30 mb-0 mr-2"
+              variant="secondary"
+              className="mb-0 mr-2"
             >
               Cancel
             </Button>
-            <Button className="mb-0" type="submit">
-                Change Password
+            <Button
+              variant="primary"
+              className="mb-0"
+              type="submit"
+              disabled={passwordStatus === "loading"}
+              >
+              {passwordStatus === "loading" ? <LoadingButton /> : "Change Password"}
             </Button>
           </div>
         </form>
-      </div>
-    </div>
+    </ModalContainer>
   );
 };
 
-export default ProfileModal;
+export default ChangePasswordModal;

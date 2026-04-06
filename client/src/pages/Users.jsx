@@ -32,14 +32,14 @@ const Users = () => {
 
   const handleOpenUserModal = () => {
     setIsEdit(false);
-    setSelectedUser(null)
+    setSelectedUser(null);
     setOpenModal(true);
   };
 
      /* ✅ OPEN EDIT */
   const handleEdit = (user) => {
     setIsEdit(true);
-    setSelectedUser(user)
+    setSelectedUser(user);
     setOpenModal(true);
   };
 
@@ -83,9 +83,9 @@ const Users = () => {
                   <td className='pl-2 py-2 border-r border-white/30'>{user.phone_number}</td>
                   <td className='pl-2 py-2 border-r border-white/30'>{user.email}</td>
 
-                  <td className='pl-2 py-2 border-r border-white/30 hidden lg:table-cell'>{user.is_active ? (<CheckIcon className="size-4 text-cyan-400" />) : (<XMarkIcon className="size-4 text-rose-400" />)}</td>
-                  <td className='pl-2 py-2 border-r border-white/30 hidden lg:table-cell'>{user.is_staff ? (<CheckIcon className="size-4 text-cyan-400" />) : (<XMarkIcon className="size-4 text-rose-400" />)}</td>
-                  <td className='pl-2 py-2 border-r border-white/30 hidden lg:table-cell'>{user.is_superuser ? (<CheckIcon className="size-4 text-cyan-400" />) : (<XMarkIcon className="size-4 text-rose-400" />)}</td>
+                  <td className='pl-2 py-2 border-r border-white/30 hidden lg:table-cell'>{user.is_active ? (<CheckIcon className="size-5 text-teal-400" />) : (<XMarkIcon className="size-5 text-rose-400" />)}</td>
+                  <td className='pl-2 py-2 border-r border-white/30 hidden lg:table-cell'>{user.is_staff ? (<CheckIcon className="size-5 text-teal-400" />) : (<XMarkIcon className="size-5 text-rose-400" />)}</td>
+                  <td className='pl-2 py-2 border-r border-white/30 hidden lg:table-cell'>{user.is_superuser ? (<CheckIcon className="size-5 text-teal-400" />) : (<XMarkIcon className="size-5 text-rose-400" />)}</td>
                   <td className='pl-2 py-2'>
                     <button className='cursor-pointer' onClick={() => handleEdit(user)}>Edit</button>
                   </td>
@@ -98,7 +98,10 @@ const Users = () => {
 
       <UserModal
         isOpen={openModal}
-        onClose={() => {setOpenModal(false), setIsOpen(false)}}
+        onClose={() => {
+          setOpenModal(false);
+          setIsOpen(false)
+        }}
         isEdit={isEdit}
         initialData={selectedUser}
       />

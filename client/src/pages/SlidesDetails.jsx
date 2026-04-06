@@ -90,7 +90,7 @@ const SlidesDetail = () => {
                         <div className="bottom-0 mt-2">
                           <button
                             onClick={() => handleEdit(slide)}
-                            className="text-cyan-400 hover:text-cyan-500 cursor-pointer pr-2 border-r-2 border-white/30"
+                            className="text-teal-400 hover:text-teal-500 cursor-pointer pr-2 border-r-2 border-white/30"
                           > Edit
                           </button>
                           <button
